@@ -1,17 +1,33 @@
 import db from "./db.js";
 import express from "express";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const saltRounds = 10;
 
+const API_KEY = process.env.API_KEY;
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use("/api", (req, res, next) => {
+  const apiKey = req.headers["x-api-key"];
+
+  if (apiKey !== API_KEY) {
+    return res.status(403).json({ message: "Forbidden Acces" });
+  }
+
+  return next();
+});
 
 async function getUser() {
   try {
     const result = await db.query("SELECT * FROM users");
-    return result.rows > 0 ? result.rows : [{ message: `No results` }];
+    console.log(result);
+    return result.rowCount > 0 ? result.rows : [{ message: `No results` }];
   } catch (err) {
     console.error("Error", err);
     throw new Error("Database query failed");
@@ -21,7 +37,13 @@ async function getUser() {
 async function getSpecificUser(id) {
   try {
     const result = await db.query("SELECT * FROM users WHERE id = $1", [id]);
-    return result.rows[0] || { message: `Can't find user id ${id}` };
+    return (
+      result.rows[0] || {
+        message: `Can't find user id ${id}`,
+        status: false,
+        code: 404,
+      }
+    );
   } catch (err) {
     console.error("Error", err);
     throw new Error("Database query failed");
@@ -29,20 +51,28 @@ async function getSpecificUser(id) {
 }
 
 function trimInputs(req) {
+  function capitalizeWord(word) {
+    const full = word.toLowerCase();
+    const first = full.slice(0, 1).toUpperCase();
+    return first + full.slice(1);
+  }
   const { email, username, password, firstName, lastName, sex } = req.body;
   const trimEmail = email.trim();
   const trimUsername = username.trim();
   const trimPassword = password.trim();
   const trimFirstName = firstName.trim();
-  const trimlastName = lastName.trim();
+  const trimLastName = lastName.trim();
   const trimSex = sex.trim();
+
+  const fixedFName = capitalizeWord(trimFirstName);
+  const fixedLName = capitalizeWord(trimLastName);
 
   return {
     email: trimEmail,
     username: trimUsername,
     password: trimPassword,
-    firstName: trimFirstName,
-    lastName: trimlastName,
+    firstName: fixedFName,
+    lastName: fixedLName,
     sex: trimSex,
   };
 }
@@ -142,6 +172,7 @@ async function checkAccounts(req, res, next) {
       });
     }
 
+    // Inserting to DB
     const hashedPassword = await bcrypt.hash(inputs.password, saltRounds);
     await db.query(
       "INSERT INTO users (email, username, password, first_name, last_name, sex) VALUES ($1, $2, $3, $4, $5, $6)",
@@ -199,4 +230,4 @@ app.post("/api/register/user", async (req, res) => {
   }
 });
 
-app.listen(5000);
+app.listen(process.env.API_PORT || 5000);
