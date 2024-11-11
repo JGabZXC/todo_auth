@@ -14,10 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/api", (req, res, next) => {
-  const apiKey = req.headers["x-api-key"];
+  const apiKey = req.headers["authorization"];
 
   if (apiKey !== API_KEY) {
-    return res.status(403).json({ message: "Forbidden Acces" });
+    return res.status(403).json({ message: "Forbidden Access", code: 403 });
   }
 
   return next();
@@ -26,7 +26,6 @@ app.use("/api", (req, res, next) => {
 async function getUser() {
   try {
     const result = await db.query("SELECT * FROM users");
-    console.log(result);
     return result.rowCount > 0 ? result.rows : [{ message: `No results` }];
   } catch (err) {
     console.error("Error", err);
@@ -44,6 +43,27 @@ async function getSpecificUser(id) {
         code: 404,
       }
     );
+  } catch (err) {
+    console.error("Error", err);
+    throw new Error("Database query failed");
+  }
+}
+
+async function getSpecificUserUserByUsernameOrEmail(input) {
+  try {
+    const result = await db.query(
+      "SELECT * FROM users WHERE email = $1 OR username = $1",
+      [input]
+    );
+
+    if (!result.rowCount > 0) {
+      return {
+        message: "No account was found",
+        code: 404,
+      };
+    }
+
+    return result.rows;
   } catch (err) {
     console.error("Error", err);
     throw new Error("Database query failed");
@@ -218,6 +238,32 @@ app.get("/api/get/:id", async (req, res) => {
     }
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+app.get("/api/find/acc/", async (req, res) => {
+  try {
+    const { acc, id } = req.query;
+
+    if (acc) {
+      const check = await getSpecificUserUserByUsernameOrEmail(acc);
+
+      if (check?.message) {
+        return res.json(check);
+      }
+
+      return res.json(check);
+    }
+
+    const check = await getSpecificUser(id);
+    console.log(id);
+    if (check?.message) {
+      return res.json(check);
+    }
+    console.log(check);
+    return res.json(check);
+  } catch (err) {
+    console.error(err);
   }
 });
 

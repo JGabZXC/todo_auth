@@ -1,5 +1,11 @@
 import pkg from "pg";
+import axios from "axios";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const APIURL = process.env.API_URL;
 
 const { Pool } = pkg;
 const pool = new Pool({
@@ -10,29 +16,46 @@ const pool = new Pool({
   port: 5432, // Default PostgreSQL port
 });
 
+// Headers to access API
+const headers = { headers: { authorization: process.env.API_KEY } };
+
 class User {
   static async findAcc(query) {
-    const result = await pool.query(
-      "SELECT * FROM users WHERE email = $1 OR username = $1",
-      [query.username]
-    );
+    try {
+      // Find Account in API
+      const result = await axios.get(
+        `${APIURL}/find/acc/?acc=${query.username}`,
+        headers
+      );
 
-    if (result.rows.length === 0) {
-      return null;
+      if (!result.data.length > 0) return null;
+
+      return result.data[0];
+    } catch (err) {
+      if (err.response) {
+        console.error(err.response?.data);
+        return err.response?.data.message;
+      }
     }
-
-    return result.rows[0];
+    console.error(err);
+    return {};
   }
 
-  static async findById(id) {
-    const result = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
-    if (result.rows.length === 0) return null;
-    return result.rows[0]; // Return the user object
+  static async findById(query) {
+    try {
+      const result = await axios.get(
+        `${APIURL}/find/acc/?id=${query.id}`,
+        headers
+      );
+      if (!result.data.length > 0) return null;
+      return result.data;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   // Compare the entered password with the stored hashed password
   static async verifyPassword(inputPassword, storedPassword) {
-    console.log(inputPassword, storedPassword);
     return bcrypt.compare(inputPassword, storedPassword); // Compare password with hash
   }
 }

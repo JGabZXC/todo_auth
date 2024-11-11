@@ -1,7 +1,6 @@
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
-import axios from "axios";
 import passport from "passport";
 import dotenv from "dotenv";
 import { Strategy } from "passport-local";
@@ -25,7 +24,7 @@ const store = new pgSession({
   pool: db, // Your DB
   tableName: "user_session", // Table name for sessions
   createTableIfMissing: true, // If table is missing it will automatically create one in db
-  pruneSessionInterval: 60, // Automatically delete expired sessions every 60 seconds
+  pruneSessionInterval: 1, // Automatically delete expired sessions every 60 seconds
 });
 
 app.use(
@@ -55,6 +54,7 @@ passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {
       const user = await User.findAcc({ username });
+
       if (!user) {
         return cb(null, false, { message: "Wrong Email." });
       } else {
@@ -62,7 +62,7 @@ passport.use(
           password,
           user.password
         );
-        console.log(isValidPassword);
+
         if (isValidPassword) {
           return cb(null, user);
         } else {

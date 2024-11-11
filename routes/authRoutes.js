@@ -1,24 +1,16 @@
 import express from "express";
-import {
-  getLogin,
-  postLogin,
-  logout,
-  getDashboard,
-} from "../controllers/authControllers.js";
+import login from "../controllers/authControllers.js";
+
+import isAuth from "../middlewares/isAuth.js";
 
 const router = express.Router();
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) return next();
-  res.redirect("/");
-}
+router.get("/login", login.getLogin);
 
-router.get("/login", getLogin);
+router.post("/login", login.postLogin);
 
-router.post("/login", postLogin);
+router.get("/logout", isAuth, login.logout);
 
-router.get("/logout", logout);
-
-router.get("/dashboard", ensureAuthenticated, getDashboard);
+router.get("/dashboard", isAuth, login.getDashboard);
 
 export default router;

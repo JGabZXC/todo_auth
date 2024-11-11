@@ -1,21 +1,25 @@
 import passport from "passport";
 
-export const getLogin = (req, res) => {
-  res.render("pages/login.ejs");
-};
+class login {
+  static getLogin = (req, res) => {
+    res.render("pages/login.ejs");
+  };
 
-export const postLogin = passport.authenticate("local", {
-  successRedirect: "/",
-  failureRedirect: "/login",
-});
-
-export const logout = (req, res, next) => {
-  req.logout((err) => {
-    if (err) return next(err);
-    res.redirect("/");
+  static postLogin = passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
   });
-};
 
-export const getDashboard = (req, res) => {
-  res.render("pages/dashboard.ejs");
-};
+  static logout = (req, res, next) => {
+    req.logout((err) => {
+      if (err) return next(err);
+      res.redirect("/");
+    });
+  };
+
+  static getDashboard = (req, res) => {
+    res.render("pages/dashboard.ejs");
+  };
+}
+
+export default login;
