@@ -23,10 +23,14 @@ app.use("/api", (req, res, next) => {
   return next();
 });
 
+// DB Functions
+
 async function getUser() {
   try {
     const result = await db.query("SELECT * FROM users");
-    return result.rowCount > 0 ? result.rows : [{ message: `No results` }];
+    return result.rowCount > 0
+      ? result.rows
+      : [{ message: `No results`, status: false, code: 404 }];
   } catch (err) {
     console.error("Error", err);
     throw new Error("Database query failed");
@@ -55,20 +59,20 @@ async function getSpecificUserUserByUsernameOrEmail(input) {
       "SELECT * FROM users WHERE email = $1 OR username = $1",
       [input]
     );
-
-    if (!result.rowCount > 0) {
-      return {
-        message: "No account was found",
-        code: 404,
-      };
-    }
-
-    return result.rows;
+    return result.rowCount > 0
+      ? result.rows
+      : {
+          message: "No account was found",
+          status: false,
+          code: 404,
+        };
   } catch (err) {
     console.error("Error", err);
     throw new Error("Database query failed");
   }
 }
+
+// Functions
 
 function trimInputs(req) {
   function capitalizeWord(word) {
@@ -76,48 +80,46 @@ function trimInputs(req) {
     const first = full.slice(0, 1).toUpperCase();
     return first + full.slice(1);
   }
-  const { email, username, password, firstName, lastName, sex } = req.body;
-  const trimEmail = email.trim();
-  const trimUsername = username.trim();
-  const trimPassword = password.trim();
-  const trimFirstName = firstName.trim();
-  const trimLastName = lastName.trim();
-  const trimSex = sex.trim();
+  function returnError(word, returnWord) {
+    if (!word) throw new Error(`There's no input in ${returnWord}`);
+  }
+  try {
+    const { email, username, password, firstName, lastName, sex } = req.body;
 
-  const fixedFName = capitalizeWord(trimFirstName);
-  const fixedLName = capitalizeWord(trimLastName);
+    returnError(email, "email");
+    returnError(username, "username");
+    returnError(password, "password");
+    returnError(firstName, "first name");
+    returnError(lastName, "last name");
+    returnError(sex, "sex");
 
-  return {
-    email: trimEmail,
-    username: trimUsername,
-    password: trimPassword,
-    firstName: fixedFName,
-    lastName: fixedLName,
-    sex: trimSex,
-  };
+    if (email && username && password && firstName && lastName && sex) {
+      const trimEmail = email.trim();
+      const trimUsername = username.trim();
+      const trimPassword = password.trim();
+      const trimFirstName = firstName.trim();
+      const trimLastName = lastName.trim();
+      const trimSex = sex.trim();
+
+      const fixedFName = capitalizeWord(trimFirstName);
+      const fixedLName = capitalizeWord(trimLastName);
+      return {
+        email: trimEmail,
+        username: trimUsername,
+        password: trimPassword,
+        firstName: fixedFName,
+        lastName: fixedLName,
+        sex: trimSex,
+      };
+    }
+  } catch (err) {
+    throw new Error(err.message);
+  }
 }
 
 function checkInputs(inputs) {
-  const invalid = [" ", "/", ".", ",", "*", "-", "+", "'", '"'];
-  const invalid2 = [
-    " ",
-    "/",
-    ".",
-    ",",
-    "*",
-    "-",
-    "+",
-    "'",
-    '"',
-    "1",
-    "2",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-  ];
+  const invalid = [" ", "/", ".", ",", "*", "-", "+", "'", '"', "|"];
+  const invalid2 = [...invalid, "1", "2", "4", "5", "6", "7", "8", "9"];
 
   if (
     inputs.email.includes(" ") ||
@@ -167,9 +169,10 @@ function checkInputs(inputs) {
   };
 }
 
-async function checkAccounts(req, res, next) {
+async function checkAccounts(req, res) {
   try {
     const inputs = trimInputs(req);
+
     const result = await db.query("SELECT * FROM users WHERE email = $1", [
       inputs.email,
     ]);
@@ -180,6 +183,7 @@ async function checkAccounts(req, res, next) {
     if (!checkInputs(inputs).status) {
       return res.status(checkInputs(inputs).code).json({
         message: checkInputs(inputs).message,
+        code: checkInputs(inputs).code,
         invalid: checkInputs(inputs)?.invalid,
       });
     }
@@ -213,17 +217,18 @@ async function checkAccounts(req, res, next) {
       inserted: inputs,
     });
   } catch (err) {
-    console.error("Error", err);
-    throw new Error("Database query failed");
+    throw new Error(err.message);
   }
 }
+
+// Routes
 
 app.get("/api/get/all", async (req, res) => {
   try {
     const all = await getUser();
     res.json(all);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message, status: 500 });
   }
 });
 
@@ -237,7 +242,7 @@ app.get("/api/get/:id", async (req, res) => {
       res.json(specificItem);
     }
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message, status: 500 });
   }
 });
 
@@ -263,16 +268,16 @@ app.get("/api/find/acc/", async (req, res) => {
     console.log(check);
     return res.json(check);
   } catch (err) {
-    console.error(err);
+    res.status(500).json({ message: err.message, status: 500 });
   }
 });
 
-app.post("/api/register/user", async (req, res) => {
+app.post("/api/register/user", async (req, res, next) => {
   try {
-    checkAccounts(req, res);
+    await checkAccounts(req, res);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message, status: 500 });
   }
 });
 
