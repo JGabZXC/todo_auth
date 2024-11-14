@@ -7,6 +7,7 @@ import { Strategy } from "passport-local";
 import connectPgSimple from "connect-pg-simple";
 import db from "./db.js";
 import User from "./models/User.js";
+import axios from "axios";
 
 import homeRoutes from "./routes/homeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -19,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(express.static("public/"));
+
+const APIURL = process.env.API_URL;
+const headers = { headers: { authorization: process.env.API_KEY } };
 
 const store = new pgSession({
   pool: db, // Your DB
@@ -49,6 +53,11 @@ app.get("/login", authRoutes);
 app.post("/login", authRoutes);
 app.get("/logout", authRoutes);
 app.get("/dashboard", authRoutes);
+
+app.get("/intro", async (req, res) => {
+  const receive = await axios.get(`${APIURL}/intro`, headers);
+  res.json(receive.data);
+});
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

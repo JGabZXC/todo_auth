@@ -2,6 +2,7 @@ import db from "./db.js";
 import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import introduction from "./lib/introduction.js";
 
 dotenv.config();
 
@@ -275,6 +276,17 @@ app.get("/api/find/acc/", async (req, res) => {
 app.post("/api/register/user", async (req, res, next) => {
   try {
     await checkAccounts(req, res);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message, status: 500 });
+  }
+});
+
+// Misc
+app.get("/api/intro", (req, res) => {
+  try {
+    const data = introduction();
+    res.json({ message: "Success", status: 200, data: data });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message, status: 500 });

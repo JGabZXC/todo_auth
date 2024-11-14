@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <title>Homepage</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title><%= pageTitle %></title>
 </head>
+
 <body>
-    <header>
-        <ul class="nav">
-            <li class="list">Home</li>
-            <li class="list">About</li>
-            <li class="list">Login</li>
-        </ul>
+    <div class="main--container">
+        <header><%- include('./partials/header.ejs') %></header>
 
-        <div class="hamburger">
-            <span class="bars"></span>
-            <span class="bars"></span>
-            <span class="bars"></span>
-        </div>
-    </header>
+        <main>
+            <div class="container main--intro">
+                <div class="img-container">
+                    <img src="./img/reminder.png" alt="">
+                </div>
+                <h1>Organize what you are going <span class="logo">To Do</span> <span class="text-rotation">today</span>!</h1>
+            </div>
+        </main>
+    </div>
 
-    <main>
-        <h1>Home Page</h1>
-    </main>
+    <script src="/js/intro-get.js"></script>
 </body>
 </html>

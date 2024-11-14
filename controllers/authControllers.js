@@ -2,7 +2,8 @@ import passport from "passport";
 
 class login {
   static getLogin = (req, res) => {
-    res.render("pages/login.ejs");
+    const title = "Login";
+    res.render("pages/login.ejs", { pageTitle: title });
   };
 
   static postLogin = passport.authenticate("local", {
@@ -18,7 +19,8 @@ class login {
   };
 
   static getDashboard = (req, res) => {
-    res.render("pages/dashboard.ejs");
+    const title = "Dashboard";
+    res.render("pages/dashboard.ejs", { pageTitle: title });
   };
 }
 

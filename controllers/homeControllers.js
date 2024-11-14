@@ -1,10 +1,9 @@
-import User from "../models/User.js";
-
 export const homePage = async (req, res) => {
-  console.log(await User.findById({ id: 5 }));
-  res.render("index.ejs");
+  const title = "Home";
+  res.render("index.ejs", { pageTitle: title });
 };
 
 export const aboutPage = (req, res) => {
-  res.render("pages/about.ejs");
+  const title = "About";
+  res.render("pages/about.ejs", { pageTitle: title });
 };

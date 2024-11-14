@@ -1,11 +1,128 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 :root {
-    --f-color-1: #181C14;
+  --fc-primary-1: #4a4947;
+  --fc-secondary-2: #d8d2c2;
+  --fc-3: #faf7f0;
+
+  --fc-accent-1: hsl(25, 84%, 51%);
+  --fc-accent-1-darker: hsl(10, 84%, 51%);
+
+  --bgc-primary-1: #faf7f0;
+  --bgc-secondary-2: #384b70;
+
+  --ff-1: "Poppins", serif;
+}
+
+/* ------------- GLOBAL CONFIG ------------- */
+
+.main--container {
+  max-width: 1920px;
+  max-height: 1080px;
+  margin: 0 auto;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    color: var(--fc-primary-1);
+}
+
+body {
+  background-color: var(--bgc-primary-1);
+  font-family: var(--ff-1);
+}
+
+/* ------------- HEADINGS ------------- */
+
+header {
+  background-color: var(--bgc-secondary-2);
+  color: var(--fc-3);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.logo-container {
+    font-size: 1.5rem;
+}
+
+.logo {
+    color: var(--fc-accent-1);
+}
+
+.main-list {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  list-style-type: none;
+}
+
+.list a {
+    text-decoration: none;
+    color: var(--fc-3);
+    font-size: 1.2rem;
+    transition: .3s ease;
+}
+
+.list:not(.primary-anchor) a:hover {
+    color: var(--fc-accent-1);
+}
+
+.primary-anchor a {
+    background-color: var(--fc-accent-1);
+    border-radius: 1rem;
+    padding: .5rem 1.5rem;
+}
+
+.primary-anchor a:hover {
+    background-color: var(--fc-accent-1-darker);
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.bars {
+  height: 0.2rem;
+  width: 1.7rem;
+  margin-top: 0.5rem;
+  background-color: var(--bgc-primary-1);
+}
+
+/* ------------- MAIN ------------- */
+.main--intro {
+    height: calc(100vh - 5.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main--intro .img-container img {
+    height: 20rem;
+}
+
+.text-rotation {
+    transition: .5s ease-in-out;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+.fade-out {
+    opacity: 0;
 }
