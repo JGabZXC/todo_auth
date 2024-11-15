@@ -3,12 +3,17 @@ import passport from "passport";
 class login {
   static getLogin = (req, res) => {
     const title = "Login";
-    res.render("pages/login.ejs", { pageTitle: title });
+    res.render("pages/login.ejs", {
+      pageTitle: title,
+      message: req.flash(),
+      user: req.session.user,
+    });
   };
 
   static postLogin = passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
+    failureFlash: true,
   });
 
   static logout = (req, res, next) => {
@@ -20,7 +25,10 @@ class login {
 
   static getDashboard = (req, res) => {
     const title = "Dashboard";
-    res.render("pages/dashboard.ejs", { pageTitle: title });
+    res.render("pages/dashboard.ejs", {
+      pageTitle: title,
+      user: req.session.user,
+    });
   };
 }
 

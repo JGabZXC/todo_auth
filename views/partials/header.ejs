@@ -5,12 +5,15 @@
   <ul class="main-list">
     <li class="list"><a href="/">Home</a></li>
     <li class="list"><a href="/about">About</a></li>
-    <% if(pageTitle !== 'Login') { %>
-      <li class="list primary-anchor"><a href="/login">Log in</a></li>
+    <% if(locals.user) { %>
+      <li class="list primary-anchor"><a href="/logout">Logout</a></li>
     <% } else { %>
-      <li class="list primary-anchor"><a href="/register">Register</a></li>
+      <% if(pageTitle !== 'Login') { %>
+        <li class="list primary-anchor"><a href="/login">Log in</a></li>
+      <% } else { %>
+        <li class="list primary-anchor"><a href="/register">Register</a></li>
+      <% } %>
     <% } %>
-    
   </ul>
   <div class="hamburger">
     <div class="bars"></div>

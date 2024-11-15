@@ -14,15 +14,15 @@ const API_KEY = process.env.API_KEY;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api", (req, res, next) => {
-  const apiKey = req.headers["authorization"];
+// app.use("/api", (req, res, next) => {
+//   const apiKey = req.headers["authorization"];
 
-  if (apiKey !== API_KEY) {
-    return res.status(403).json({ message: "Forbidden Access", code: 403 });
-  }
+//   if (apiKey !== API_KEY) {
+//     return res.status(403).json({ message: "Forbidden Access", code: 403 });
+//   }
 
-  return next();
-});
+//   return next();
+// });
 
 // DB Functions
 
@@ -250,7 +250,6 @@ app.get("/api/get/:id", async (req, res) => {
 app.get("/api/find/acc/", async (req, res) => {
   try {
     const { acc, id } = req.query;
-
     if (acc) {
       const check = await getSpecificUserUserByUsernameOrEmail(acc);
 
@@ -261,13 +260,14 @@ app.get("/api/find/acc/", async (req, res) => {
       return res.json(check);
     }
 
-    const check = await getSpecificUser(id);
-    console.log(id);
-    if (check?.message) {
+    if (id) {
+      const check = await getSpecificUser(id);
+      if (check?.message) {
+        return res.json(check);
+      }
+      console.log(check);
       return res.json(check);
     }
-    console.log(check);
-    return res.json(check);
   } catch (err) {
     res.status(500).json({ message: err.message, status: 500 });
   }
@@ -275,6 +275,7 @@ app.get("/api/find/acc/", async (req, res) => {
 
 app.post("/api/register/user", async (req, res, next) => {
   try {
+    console.log(req.body);
     await checkAccounts(req, res);
   } catch (err) {
     console.error(err);

@@ -8,9 +8,13 @@ import connectPgSimple from "connect-pg-simple";
 import db from "./db.js";
 import User from "./models/User.js";
 import axios from "axios";
+import flash from "connect-flash";
 
 import homeRoutes from "./routes/homeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import registerRoutes from "./routes/registerRoutes.js";
+
+import userReq from "./middlewares/userReq.js";
 
 const app = express();
 const pgSession = connectPgSimple(session);
@@ -33,39 +37,55 @@ const store = new pgSession({
 
 app.use(
   session({
-    secret: "SIGNEDCOOKIES",
+    secret: "234sdaczxc576685685467",
     resave: false,
     saveUninitialized: false,
     store: store, // Store in DB
     cookie: {
+      httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
 );
 
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(userReq);
 
 // Routes
 app.get("/", homeRoutes);
 app.get("/about", homeRoutes);
+
 app.get("/login", authRoutes);
 app.post("/login", authRoutes);
 app.get("/logout", authRoutes);
 app.get("/dashboard", authRoutes);
 
+app.get("/register", registerRoutes);
+app.post("/register", registerRoutes);
+
+// Misc
+
 app.get("/intro", async (req, res) => {
-  const receive = await axios.get(`${APIURL}/intro`, headers);
-  res.json(receive.data);
+  try {
+    const receive = await axios.get(`${APIURL}/intro`, headers);
+    res.json(receive.data);
+  } catch (err) {
+    console.error(err.message);
+    res.redirect("/");
+  }
 });
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {
       const user = await User.findAcc({ username });
-
       if (!user) {
-        return cb(null, false, { message: "Wrong Email." });
+        return cb(null, false, {
+          message: "Account doesn't exist",
+        });
       } else {
         const isValidPassword = await User.verifyPassword(
           password,
@@ -75,7 +95,10 @@ passport.use(
         if (isValidPassword) {
           return cb(null, user);
         } else {
-          return cb(null, false, { message: "Wrong Password." });
+          return cb(null, false, {
+            message:
+              "Incorrect credentials was inputted. Please check your email or username, and password.",
+          });
         }
       }
     } catch (error) {

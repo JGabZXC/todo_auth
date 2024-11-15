@@ -21,11 +21,7 @@ fetch("http://localhost:3000/intro")
 
               labelTextRotation.classList.remove("fade-out");
               labelTextRotation.classList.add("fade-in");
-
-              console.log("Content updated and fade-in applied!");
             }, 500);
-          } else {
-            console.log("No content change, skipping fade transition.");
           }
         })
         .catch((error) => {
