@@ -41,15 +41,19 @@ class register {
         );
       }
 
-      const insert = await axios.post(`${APIURL}/register/user`, {
-        headers: { authorization: process.env.API_KEY },
-        email,
-        username,
-        firstName: firstname,
-        lastName: lastname,
-        password,
-        sex,
-      });
+      const insert = await axios.post(
+        `${APIURL}/register/user`,
+        {
+          email,
+          username,
+          firstName: firstname,
+          lastName: lastname,
+          password,
+          sex,
+        },
+        headers
+      );
+
       req.flash("success", `${insert.data.message}`);
       return res.redirect("/login");
     } catch (err) {

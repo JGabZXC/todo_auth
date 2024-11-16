@@ -14,15 +14,15 @@ const API_KEY = process.env.API_KEY;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// app.use("/api", (req, res, next) => {
-//   const apiKey = req.headers["authorization"];
+app.use("/api", (req, res, next) => {
+  const apiKey = req.headers["authorization"];
 
-//   if (apiKey !== API_KEY) {
-//     return res.status(403).json({ message: "Forbidden Access", code: 403 });
-//   }
+  if (apiKey !== API_KEY) {
+    return res.status(403).json({ message: "Forbidden Access", code: 403 });
+  }
 
-//   return next();
-// });
+  return next();
+});
 
 // DB Functions
 
@@ -275,7 +275,6 @@ app.get("/api/find/acc/", async (req, res) => {
 
 app.post("/api/register/user", async (req, res, next) => {
   try {
-    console.log(req.body);
     await checkAccounts(req, res);
   } catch (err) {
     console.error(err);
