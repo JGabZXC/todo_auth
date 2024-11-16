@@ -1,0 +1,102 @@
+:root {
+    --fc-primary-1: #4a4947;
+    --fc-secondary-2: #d8d2c2;
+    --fc-3: #faf7f0;
+  
+    --fc-accent-1: hsl(25, 84%, 51%);
+    --fc-accent-1-darker: hsl(10, 84%, 51%);
+
+    --btn-color-1: #33b249;
+    --btn-color-2: #ffbd03;
+    --btn-color-3: #ED0800;
+  
+    --bgc-primary-1: #faf7f0;
+    --bgc-secondary-2: #384b70;
+  
+    --ff-1: "Poppins", serif;
+}
+
+/* ------------- MAIN SECTION ------------- */
+
+.todo-main-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+
+    padding-block: 1rem;
+}
+
+.todo-container {
+    padding: 1rem;
+    border: .2rem solid var(--bgc-secondary-2);
+    border-radius: 1rem;
+}
+
+.item-action-button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-action-button-container div:nth-child(2) {
+    display: flex;
+    gap: .25rem;
+}
+
+/* .item-action-button-container .btn {
+    font-family: var(--ff-1);
+    cursor: pointer;
+    border: none;
+    color: var(--fc-primary-1);
+    border-radius: .25rem;
+    padding: .25rem .5rem;
+} */
+
+.item-action-button-container {
+    float: right;
+}
+
+.btn-done {
+    background-color: var(--btn-color-1);
+    color: var(--fc-3);
+}
+
+.btn-update {
+    background-color: var(--btn-color-2);
+    color: var(--fc-3);
+}
+
+.btn-delete {
+    background-color: var(--btn-color-3);
+    color: var(--fc-3);
+}
+
+/* ------------- MODAL ------------- */
+.custom-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ------------- MEDIA QUERIES ------------- */
+
+@media (width <= 1074px) {
+    .todo-main-container {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (width <= 770px) {
+    .todo-main-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (width <= 600px) {
+    .todo-main-container {
+        grid-template-columns: 1fr;
+    }
+}
