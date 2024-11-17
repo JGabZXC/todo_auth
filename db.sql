@@ -8,3 +8,12 @@ CREATE TABLE users (
     sex VARCHAR(30),
     account_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
+
+CREATE TABLE todos (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    user_firstname VARCHAR(50),
+    description VARCHAR (100),
+    todo_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR (20)
+)

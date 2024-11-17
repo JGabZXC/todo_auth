@@ -77,13 +77,18 @@ async function getSpecificUserUserByUsernameOrEmail(input) {
 
 function trimInputs(req) {
   function capitalizeWord(word) {
-    const full = word.toLowerCase();
-    const first = full.slice(0, 1).toUpperCase();
-    return first + full.slice(1);
+    const full = word.toLowerCase().trim().replace(/\s+/g, " ").split(" ");
+    const arr = [];
+    full.forEach((word) => {
+      arr.push(word.replace(word[0], word[0].toUpperCase()));
+    });
+    return arr.join(" ");
   }
+
   function returnError(word, returnWord) {
     if (!word) throw new Error(`There's no input in ${returnWord}`);
   }
+
   try {
     const { email, username, password, firstName, lastName, sex } = req.body;
 
@@ -98,18 +103,23 @@ function trimInputs(req) {
       const trimEmail = email.trim();
       const trimUsername = username.trim();
       const trimPassword = password.trim();
-      const trimFirstName = firstName.trim();
-      const trimLastName = lastName.trim();
-      const trimSex = sex.trim();
-
-      const fixedFName = capitalizeWord(trimFirstName);
-      const fixedLName = capitalizeWord(trimLastName);
+      const trimFirstName = capitalizeWord(firstName);
+      const trimLastName = capitalizeWord(lastName);
+      const trimSex = capitalizeWord(sex);
+      console.log({
+        email: trimEmail,
+        username: trimUsername,
+        password: trimPassword,
+        firstName: trimFirstName,
+        lastName: trimLastName,
+        sex: trimSex,
+      });
       return {
         email: trimEmail,
         username: trimUsername,
         password: trimPassword,
-        firstName: fixedFName,
-        lastName: fixedLName,
+        firstName: trimFirstName,
+        lastName: trimLastName,
         sex: trimSex,
       };
     }
@@ -198,18 +208,18 @@ async function checkAccounts(req, res) {
     }
 
     // Inserting to DB
-    const hashedPassword = await bcrypt.hash(inputs.password, saltRounds);
-    await db.query(
-      "INSERT INTO users (email, username, password, first_name, last_name, sex) VALUES ($1, $2, $3, $4, $5, $6)",
-      [
-        inputs.email,
-        inputs.username,
-        hashedPassword,
-        inputs.firstName,
-        inputs.lastName,
-        inputs.sex,
-      ]
-    );
+    // const hashedPassword = await bcrypt.hash(inputs.password, saltRounds);
+    // await db.query(
+    //   "INSERT INTO users (email, username, password, first_name, last_name, sex) VALUES ($1, $2, $3, $4, $5, $6)",
+    //   [
+    //     inputs.email,
+    //     inputs.username,
+    //     hashedPassword,
+    //     inputs.firstName,
+    //     inputs.lastName,
+    //     inputs.sex,
+    //   ]
+    // );
 
     return res.status(201).json({
       message: "Created Account",

@@ -11,7 +11,7 @@ class login {
   };
 
   static postLogin = passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/dashboard",
     failureRedirect: "/login",
     failureFlash: true,
   });
