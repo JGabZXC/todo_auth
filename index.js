@@ -106,14 +106,6 @@ function trimInputs(req) {
       const trimFirstName = capitalizeWord(firstName);
       const trimLastName = capitalizeWord(lastName);
       const trimSex = capitalizeWord(sex);
-      console.log({
-        email: trimEmail,
-        username: trimUsername,
-        password: trimPassword,
-        firstName: trimFirstName,
-        lastName: trimLastName,
-        sex: trimSex,
-      });
       return {
         email: trimEmail,
         username: trimUsername,
@@ -232,7 +224,7 @@ async function checkAccounts(req, res) {
   }
 }
 
-// Routes
+// Routes User
 
 app.get("/api/get/all", async (req, res) => {
   try {
@@ -289,6 +281,35 @@ app.post("/api/register/user", async (req, res, next) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message, status: 500 });
+  }
+});
+
+// Routes To Do
+// Get todo based on user ID
+app.get("/api/todo/get/all/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const check = await db.query("SELECT * FROM todos WHERE user_id = $1", [
+      id,
+    ]);
+
+    console.log(id);
+
+    if (!check.rowCount > 0) {
+      console.log("here");
+      return res
+        .status(404)
+        .json({ message: "No Content was found", status: 404, data: [] });
+    }
+
+    res.json({ message: "Datas retrieved", status: 200, data: check.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: err.messages,
+      status: 500,
+    });
   }
 });
 
