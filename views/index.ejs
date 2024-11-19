@@ -16,7 +16,9 @@
                 <div class="img-container">
                     <img src="./img/reminder.png" alt="">
                 </div>
-                <h1>Organize what you are going <span class="logo">To Do</span> <span class="text-rotation">today</span>!</h1>
+                <h1>Organize what you are going <span class="logo">To Do</span>
+                    <span class="text-rotation">Today</span>!
+                </h1>
                 
                 <% if(user) { %>
                     <p> <%= user.sex !== 'Female' ? 'Mr' : 'Ms' %>. <%= user.first_name %></p>
@@ -26,9 +28,30 @@
     </div>
 
     <!-- SCRIPTS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/js/intro-get.js"></script>
-</body>
+    <script>
+        function el() {
+            $('.text-rotation').removeClass('fade-in').addClass('fade-out');
+            setTimeout(()=>{
+                index++;
+                if(index === introx.length) index = 0;
+                $('.text-rotation').text(introx[index]);
+                
+                $('.text-rotation').removeClass('fade-out')
+                $('.text-rotation').addClass('fade-in')
+            }, 500)
+        }
+        const introx = <%- JSON.stringify(intro) %> || [];
+        let index = 0;
+
+        if(introx.length > 0) {
+            $('.text-rotation').removeClass('fade-out').addClass('fade-in');
+            $('.text-rotation').text(introx[index]);
+            setInterval(() => {
+                el();
+            }, 3000);
+        }
+    </script>
 </html>

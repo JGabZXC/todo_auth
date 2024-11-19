@@ -12,7 +12,6 @@ import flash from "connect-flash";
 import homeRoutes from "./routes/homeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import registerRoutes from "./routes/registerRoutes.js";
-import miscRoutes from "./routes/miscRoutes.js";
 
 import userReq from "./middlewares/userReq.js";
 
@@ -62,11 +61,6 @@ app.get("/dashboard", authRoutes);
 
 app.get("/register", registerRoutes);
 app.post("/register", registerRoutes);
-
-// Misc
-
-app.get("/intro", miscRoutes);
-app.get("/getAllTodo", miscRoutes);
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

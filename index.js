@@ -2,7 +2,6 @@ import db from "./db.js";
 import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
-import introduction from "./lib/introduction.js";
 
 dotenv.config();
 
@@ -200,18 +199,18 @@ async function checkAccounts(req, res) {
     }
 
     // Inserting to DB
-    // const hashedPassword = await bcrypt.hash(inputs.password, saltRounds);
-    // await db.query(
-    //   "INSERT INTO users (email, username, password, first_name, last_name, sex) VALUES ($1, $2, $3, $4, $5, $6)",
-    //   [
-    //     inputs.email,
-    //     inputs.username,
-    //     hashedPassword,
-    //     inputs.firstName,
-    //     inputs.lastName,
-    //     inputs.sex,
-    //   ]
-    // );
+    const hashedPassword = await bcrypt.hash(inputs.password, saltRounds);
+    await db.query(
+      "INSERT INTO users (email, username, password, first_name, last_name, sex) VALUES ($1, $2, $3, $4, $5, $6)",
+      [
+        inputs.email,
+        inputs.username,
+        hashedPassword,
+        inputs.firstName,
+        inputs.lastName,
+        inputs.sex,
+      ]
+    );
 
     return res.status(201).json({
       message: "Created Account",
@@ -310,17 +309,6 @@ app.get("/api/todo/get/all/:id", async (req, res) => {
       message: err.messages,
       status: 500,
     });
-  }
-});
-
-// Misc
-app.get("/api/intro", (req, res) => {
-  try {
-    const data = introduction();
-    res.json({ message: "Success", status: 200, data: data });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message, status: 500 });
   }
 });
 
