@@ -28,7 +28,7 @@ const store = new pgSession({
   pool: db, // Your DB
   tableName: "user_session", // Table name for sessions
   createTableIfMissing: true, // If table is missing it will automatically create one in db
-  pruneSessionInterval: 1, // Automatically delete expired sessions every 60 seconds
+  pruneSessionInterval: 60, // Automatically delete expired sessions every 60 seconds
 });
 
 app.use(

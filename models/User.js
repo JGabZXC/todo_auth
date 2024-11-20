@@ -1,4 +1,3 @@
-import pkg from "pg";
 import axios from "axios";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
@@ -6,15 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const APIURL = process.env.API_URL;
-
-const { Pool } = pkg;
-const pool = new Pool({
-  user: "postgres", // Replace with your database username
-  host: "localhost", // Replace with your database host
-  database: "todo_authdb", // Replace with your database name
-  password: "gabData", // Replace with your database password
-  port: 5432, // Default PostgreSQL port
-});
 
 // Headers to access API
 const headers = { headers: { authorization: process.env.API_KEY } };
