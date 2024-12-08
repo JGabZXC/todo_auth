@@ -35,9 +35,24 @@
     color: var(--fc-primary-1);
 }
 
+.form-control {
+  padding: 5px;
+}
+
+.form--footer p {
+  margin: 0;
+}
+
 body {
   background-color: var(--bgc-primary-1);
   font-family: var(--ff-1);
+}
+
+@media (width <= 500px) {
+  .container {
+    width: 90%;
+    padding: 0;
+  }
 }
 
 /* ------------- HEADINGS ------------- */
@@ -164,16 +179,21 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  width: 100%;
+  width: 60%;
+}
+
+@media (width <= 500px) {
+  .container-secondary-login {
+    width: 100%;
+  }
 }
 
 .container-form-login form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  width: 40%;
 }
 
 .container-form-login form button {
-  width: 20%;
+  max-width: 40%;
 }
