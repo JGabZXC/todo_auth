@@ -11,6 +11,5 @@ export const homePage = async (req, res) => {
 
 export const aboutPage = (req, res) => {
   const title = "About";
-  console.log(req.libIntro);
   res.render("pages/about.ejs", { pageTitle: title, user: req.session.user });
 };

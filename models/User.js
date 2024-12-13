@@ -10,11 +10,11 @@ const APIURL = process.env.API_URL;
 const headers = { headers: { authorization: process.env.API_KEY } };
 
 class User {
-  static async findAcc(query) {
+  static async findAcc(data) {
     try {
       // Find Account in API
       const result = await axios.get(
-        `${APIURL}/find/acc/?acc=${query.username}`,
+        `${APIURL}/find/acc/?acc=${data.username}`,
         headers
       );
 
@@ -31,10 +31,10 @@ class User {
     return {};
   }
 
-  static async findById(query) {
+  static async findById(data) {
     try {
       const result = await axios.get(
-        `${APIURL}/find/acc/?id=${query.id}`,
+        `${APIURL}/find/acc/?id=${data.id}`,
         headers
       );
       if (!result.data.length > 0) return null;
@@ -47,6 +47,19 @@ class User {
   // Compare the entered password with the stored hashed password
   static async verifyPassword(inputPassword, storedPassword) {
     return bcrypt.compare(inputPassword, storedPassword); // Compare password with hash
+  }
+
+  static async getTodo(data) {
+    try {
+      const result = await axios.get(
+        `${APIURL}/todo/get/all/${data.id}`,
+        headers
+      );
+      return result.data;
+    } catch (err) {
+      // console.error(err.response);
+      return err.response.data;
+    }
   }
 }
 export default User;

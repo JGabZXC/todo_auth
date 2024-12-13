@@ -1,95 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/styles-dashboard.css" />
-    <title><%= pageTitle %> | <%= user?.first_name %></title>
+    <title>
+        <%= pageTitle %> | <%= user?.first_name %>
+    </title>
 </head>
 
 <body>
     <div class="main--container">
         <header><%- include('../partials/header.ejs') %></header>
-
         <main>
             <section>
                 <div class="container todo-main-container">
-                    <div class="todo-container">
-                        <div class="item-display-container">
-                            <p>Do laundry</p>
-                        </div>
-                        <div class="item-action-button-container">
-                            <div>
-                                <button class="btn btn-done">Done</button>
+                    <% if(todo.length> 0) { %>
+                        <div class="todo-container">
+                            <div class="item-display-container">
+                                <p>Do laundry</p>
                             </div>
-                            <div>
-                                <button class="btn btn-update">Update</button>
-                                <button class="btn btn-delete">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="todo-container">
-                        <div class="item-display-container">
-                            <p>Clean the car</p>
-                        </div>
-                        <div class="item-action-button-container">
-                            <div>
-                                <button class="btn btn-done">Done</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-update">Update</button>
-                                <button class="btn btn-delete">Delete</button>
+                            <div class="item-action-button-container">
+                                <div>
+                                    <button class="btn btn-done">Done</button>
+                                </div>
+                                <div>
+                                    <button class="btn btn-update">Update</button>
+                                    <button class="btn btn-delete">Delete</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="todo-container">
-                        <div class="item-display-container">
-                            <p>Clean dishes</p>
-                        </div>
-                        <div class="item-action-button-container">
-                            <div>
-                                <button class="btn btn-done">Done</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-update">Update</button>
-                                <button class="btn btn-delete">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="todo-container">
-                        <div class="item-display-container">
-                            <p>Finish homework</p>
-                        </div>
-                        <div class="item-action-button-container">
-                            <div>
-                                <button class="btn btn-done">Done</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-update">Update</button>
-                                <button class="btn btn-delete">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="todo-container">
-                        <div class="item-display-container">
-                            <p>Make food</p>
-                        </div>
-                        <div class="item-action-button-container">
-                            <div>
-                                <button class="btn btn-done">Done</button>
-                            </div>
-                            <div>
-                                <button class="btn btn-update">Update</button>
-                                <button class="btn btn-delete">Delete</button>
-                            </div>
-                        </div>
-                    </div>
+                        <% } else { %>
+                            <p>No To do was found. Create one!</p>
+                            <% } %>
                 </div>
             </section>
         </main>
@@ -118,13 +64,50 @@
             </div>
         </div>
     </div>
-        </main>
-    </div>
 
     <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="/js/dashboard.js"></script>
+    <script>
+        $(".todo-main-container").html(""); // Clear the content
+
+        const modalTitle = $("#itemModalTitle");
+        const modalContent = $("#modal-content-item");
+        const modalClose = $(".modal-close");
+        
+        const td = [<%- JSON.stringify(todo) %>];
+        // FIX RIGHT HERE LEFT ON 12/13/24
+        td.forEach((item, index) => {
+            console.log(item)
+            const itemx = item.length > 15 ? item.slice(0, 15) + "..." : item;
+            const html = `
+        <div id='item_${index}' class="todo-container" data-toggle="modal" data-target="#itemModal">
+            <div class="item-display-container">
+                <p>${index + 1}. ${itemx}</p>
+            </div>
+
+            <div class="item-action-button-container">
+                <div>
+                    <button class="btn btn-done">Open</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+            $(".todo-main-container").append(html);
+
+            $(`#item_${index}`).on("click", function () {
+                modalTitle.text(index);
+                modalContent.text(item);
+            });
+        });
+
+        modalClose.on("click", function () {
+            modalTitle.text("");
+            modalContent.text("");
+        });
+    </script>
 </body>
+
 </html>

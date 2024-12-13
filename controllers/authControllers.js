@@ -1,5 +1,7 @@
 import passport from "passport";
 
+import User from "../models/User.js";
+
 class login {
   static getLogin = (req, res) => {
     const title = "Login";
@@ -23,11 +25,13 @@ class login {
     });
   };
 
-  static getDashboard = (req, res) => {
+  static getDashboard = async (req, res) => {
     const title = "Dashboard";
+    const todo = await User.getTodo({ id: req.session.user.id });
     res.render("pages/dashboard.ejs", {
       pageTitle: title,
       user: req.session.user,
+      todo: todo.data,
     });
   };
 }
