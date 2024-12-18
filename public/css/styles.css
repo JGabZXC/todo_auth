@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
   padding: 0;
@@ -8,17 +8,15 @@
 }
 
 :root {
-  --fc-primary-1: #4a4947;
-  --fc-secondary-2: #d8d2c2;
-  --fc-3: #faf7f0;
+  --fc-primary-1: #fffefe;
 
-  --fc-accent-1: hsl(25, 84%, 51%);
-  --fc-accent-1-darker: hsl(10, 84%, 51%);
+  --fc-accent-1: #ff5757;
 
-  --bgc-primary-1: #faf7f0;
-  --bgc-secondary-2: #384b70;
+  --hover-primary: #b41111;
 
-  --ff-1: "Poppins", serif;
+  --bgc-primary-1: #000000;
+
+  --ff-1: "Montserrat", serif;
 }
 
 /* ------------- GLOBAL CONFIG ------------- */
@@ -35,17 +33,33 @@
     color: var(--fc-primary-1);
 }
 
-.form-control {
-  padding: 5px;
+h1 {
+  font-size: inherit;
+  color: inherit;
 }
 
-.form--footer p {
-  margin: 0;
+a {
+  text-decoration: none;
+  font-size: inherit;
+  color: inherit;
+}
+
+ul {
+  list-style-type: none;
 }
 
 body {
-  background-color: var(--bgc-primary-1);
-  font-family: var(--ff-1);
+  /* background-color: var(--bgc-primary-1);
+  font-family: var(--ff-1); */
+
+  background: rgb(23,18,102);
+  background: linear-gradient(337deg, rgba(23,18,102,1) 0%, rgba(23,23,24,1) 35%);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+section {
+  height: 100dvh;
 }
 
 @media (width <= 500px) {
@@ -57,60 +71,45 @@ body {
 
 /* ------------- HEADINGS ------------- */
 
-header {
-  background-color: var(--bgc-secondary-2);
-  color: var(--fc-3);
-}
-
 nav {
+  width: 100%;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem;
+
+  outline: 2px solid green;
+}
+
+.nav.sticky {
+  position: sticky;
 }
 
 .logo-container {
-    font-size: 1.5rem;
-}
-
-.logo {
-    color: var(--fc-accent-1);
-    font-weight: 600;
-
-    margin: 0; /* Remove default margin from bootstrap*/
+  color: var(--fc-accent-1);
+  font-size: 3rem;
 }
 
 .main-list {
   display: flex;
-  align-items: center;
   gap: 2rem;
 
-  list-style-type: none;
-
-  margin: 0; /* Remove default margin from bootstrap*/
-  padding: 0; /* Remove default padding from bootstrap */
+  font-size: 1.5rem;
+  color: var(--fc-primary-1);
 }
 
-.list a {
-    text-decoration: none;
-    color: var(--fc-3);
-    font-size: 1.2rem;
-    transition: .3s ease;
+.get-started a {
+ padding: 1rem 1.5rem;
+ border-radius: 2rem;
+ background-color: var(--fc-accent-1);
+
+ transition: .5s ease;
 }
 
-.list:not(.primary-anchor) a:hover {
-    color: var(--fc-accent-1);
-}
-
-.primary-anchor a {
-    background-color: var(--fc-accent-1);
-    border-radius: 1rem;
-    padding: .5rem 1.5rem;
-}
-
-.primary-anchor a:hover {
-    background-color: var(--fc-accent-1-darker);
-}
+.get-started a:hover {
+  background-color: var(--hover-primary);
+} 
 
 .hamburger {
   display: none;
@@ -123,89 +122,7 @@ nav {
   margin-top: 0.5rem;
   background-color: var(--bgc-primary-1);
 }
-
 /* ------------- MAIN ------------- */
-.main--intro {
-    height: calc(100vh - 5.5rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
 
-.main--intro .img-container img {
-    height: 20rem;
-}
-
-.text-rotation {
-    transition: .5s ease-in-out;
-}
-
-.fade-in {
-    opacity: 1;
-}
-
-.fade-out {
-    opacity: 0;
-}
 
 /* ------------- LOGIN ------------- */
-/* .container-form-login {
-  min-width: 50rem; 
-  outline: 2px solid green;
-}
-
-.container-form-login form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.container-form-login form input {
-  width: 20rem;
-  padding: 1rem;
-} 
-*/
-
-.container-form-login {
-  height: calc(100vh - 5.5rem);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.container-secondary-login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  height: 40rem;
-  width: 40rem;
-}
-
-@media (width <= 500px) {
-  .container-secondary-login {
-    height: 100%;
-    width: 100%;
-  }
-}
-
-.container-form-login form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 60%;
-}
-
-@media (width <= 500px) {
-  .container-form-login form {
-    width: 100%;
-  }
-}
-
-.container-form-login form button {
-  max-width: 40%;
-}
-

@@ -1,22 +1,10 @@
 <nav>
   <div class="logo-container">
-    <h1 class="logo">To Do</h1>
+    <h1 class="logo"><a href="/">ListIt!</a></h1>
   </div>
   <ul class="main-list">
-    <li class="list"><a href="/">Home</a></li>
-    <li class="list"><a href="/about">About</a></li>
-    <% if(locals.user) { %>
-      <li class="list"><a href="/dashboard">Dashboard</a></li>
-      <li class="list"><a href="#">Add To Do</a></li>
-      <li class="list"><a href="#">Done To Do</a></li>
-      <li class="list primary-anchor"><a href="/logout">Logout</a></li>
-    <% } else { %>
-      <% if(pageTitle !== 'Login') { %>
-        <li class="list primary-anchor"><a href="/login">Log in</a></li>
-      <% } else { %>
-        <li class="list primary-anchor"><a href="/register">Register</a></li>
-      <% } %>
-    <% } %>
+    <li class="list"><a href="/login">Log in</a></li>
+    <li class="list get-started"><a href="/register">Get Started for Free</a></li>
   </ul>
   <div class="hamburger">
     <div class="bars"></div>
