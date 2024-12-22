@@ -33,6 +33,11 @@
     color: var(--fc-primary-1);
 }
 
+img {
+  display: block;
+  aspect-ratio: 16/9;
+}
+
 h1 {
   font-size: inherit;
   color: inherit;
@@ -62,6 +67,15 @@ section {
   height: 100dvh;
 }
 
+button {
+  all: unset;
+}
+
+.btn a {
+  padding: 1rem 1.5rem;
+ border-radius: 2rem;
+}
+
 @media (width <= 500px) {
   .container {
     width: 90%;
@@ -78,8 +92,6 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 2rem;
-
-  outline: 2px solid green;
 }
 
 .nav.sticky {
@@ -100,8 +112,6 @@ nav {
 }
 
 .get-started a {
- padding: 1rem 1.5rem;
- border-radius: 2rem;
  background-color: var(--fc-accent-1);
 
  transition: .5s ease;
@@ -124,5 +134,48 @@ nav {
 }
 /* ------------- MAIN ------------- */
 
+.hero--container {
+  text-align: center;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.intro h1 {
+  font-size: 3.5rem;
+  font-weight: 600;
+}
+
+.intro p {
+  font-size: 1.35rem;
+}
+
+.intro__btn--container {
+  display: flex;
+  gap: 2rem;
+
+  margin: 0 auto;
+}
+
+.learn-more a {
+  border: 2px solid var(--fc-accent-1);
+
+  transition: .5s ease;
+}
+
+.learn-more a:hover {
+  background-color: #b41111;
+  border: 2px solid var(--hover-primary);
+}
+
+.intro__img--container img {
+  max-width: 60%;
+  height: auto;
+
+  margin: 0 auto;
+}
 
 /* ------------- LOGIN ------------- */
