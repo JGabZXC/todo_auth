@@ -14,16 +14,24 @@
 
   --hover-primary: #b41111;
 
-  --bgc-primary-1: #000000;
+  --bgc-primary-1: rgba(23,23,24,1);
 
   --ff-1: "Montserrat", serif;
 }
 
 /* ------------- GLOBAL CONFIG ------------- */
 
+.header1 {
+  font-size: 2rem;
+}
+
+.default-text {
+  font-size: 1.25rem;
+}
+
 .main--container {
   max-width: 1920px;
-  max-height: 1080px;
+  /* max-height: 1080px; */
   margin: 0 auto;
 }
 
@@ -33,9 +41,17 @@
     color: var(--fc-primary-1);
 }
 
+.btn a {
+  padding: .8rem 3rem;
+  border-radius: 2rem;
+
+  transition: .5s ease;
+}
+
+
 img {
   display: block;
-  aspect-ratio: 16/9;
+  width: 100%;
 }
 
 h1 {
@@ -53,28 +69,31 @@ ul {
   list-style-type: none;
 }
 
-body {
+header {
   /* background-color: var(--bgc-primary-1);
   font-family: var(--ff-1); */
 
   background: rgb(23,18,102);
   background: linear-gradient(337deg, rgba(23,18,102,1) 0%, rgba(23,23,24,1) 35%);
   background-repeat: no-repeat;
-  background-position: center;
 }
 
 section {
-  height: 100dvh;
+  height: 100vh;
+}
+
+section .container {
+  padding-block: 5rem;
 }
 
 button {
   all: unset;
 }
 
-.btn a {
-  padding: 1rem 1.5rem;
- border-radius: 2rem;
+p {
+  font-size: inherit;
 }
+
 
 @media (width <= 500px) {
   .container {
@@ -87,7 +106,6 @@ button {
 
 nav {
   width: 100%;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -100,21 +118,27 @@ nav {
 
 .logo-container {
   color: var(--fc-accent-1);
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .main-list {
   display: flex;
   gap: 2rem;
 
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--fc-primary-1);
+} 
+
+.list a {
+  transition: .5s ease;
+}
+
+li:not(.get-started) a:hover {
+  color: var(--fc-accent-1);
 }
 
 .get-started a {
  background-color: var(--fc-accent-1);
-
- transition: .5s ease;
 }
 
 .get-started a:hover {
@@ -132,15 +156,14 @@ nav {
   margin-top: 0.5rem;
   background-color: var(--bgc-primary-1);
 }
-/* ------------- MAIN ------------- */
 
-.hero--container {
-  text-align: center;
-}
+/* ------------- MAIN ------------- */
 
 .intro {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 3.5rem;
 }
 
@@ -150,7 +173,8 @@ nav {
 }
 
 .intro p {
-  font-size: 1.35rem;
+  text-align: center;
+  font-size: 1.25rem;
 }
 
 .intro__btn--container {
@@ -162,8 +186,6 @@ nav {
 
 .learn-more a {
   border: 2px solid var(--fc-accent-1);
-
-  transition: .5s ease;
 }
 
 .learn-more a:hover {
@@ -177,5 +199,41 @@ nav {
 
   margin: 0 auto;
 }
+
+/* ------------- ABOUT ------------- */
+
+.about {
+  height: auto;
+  background-color: rgba(23,23,24,1);
+}
+
+.about-head {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.about__item--container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10rem;
+  /* outline: 2px solid green; */
+}
+
+.item:nth-child(odd) {
+  flex-direction: row-reverse;
+}
+
+.item .text--container  {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
 
 /* ------------- LOGIN ------------- */
