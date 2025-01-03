@@ -39,6 +39,7 @@ app.use(
     store: store, // Store in DB
     cookie: {
       httpOnly: true,
+      secure: process.env.COOKIE_SEC === "production",
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
@@ -80,8 +81,7 @@ passport.use(
           return cb(null, user);
         } else {
           return cb(null, false, {
-            message:
-              "Incorrect credentials was inputted. Please check your email or username, and password.",
+            message: "Incorrect credentials. Please try again",
           });
         }
       }
