@@ -28,8 +28,12 @@ class register {
         repassword,
         sex,
       } = req.body;
+
+      console.log(req.body);
+
       const checkEmail = await User.findAcc({ username: email });
       const checkUsername = await User.findAcc({ username });
+
       if (password !== repassword) {
         req.flash("error", "Your password does not match");
       }
