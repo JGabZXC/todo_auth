@@ -15,98 +15,12 @@
     <div class="main--container">
         <header><%- include('../partials/header.ejs') %></header>
         <main>
-            <section>
-                <div class="container todo-main-container">
-                    <% if(todo.length> 0) { %>
-                        <div class="todo-container">
-                            <div class="item-display-container">
-                                <p>Do laundry</p>
-                            </div>
-                            <div class="item-action-button-container">
-                                <div>
-                                    <button class="btn btn-done">Done</button>
-                                </div>
-                                <div>
-                                    <button class="btn btn-update">Update</button>
-                                    <button class="btn btn-delete">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                        <% } else { %>
-                            <p>No To do was found. Create one!</p>
-                            <% } %>
+            <section class="dashboard default-text">
+                <div class="container dashboard--container">
+
                 </div>
             </section>
         </main>
-
-        <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModal"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header custom-header">
-                        <h5 class="modal-title" id="itemModalTitle">Modal ID</h5>
-                        <button type="button" class="modal-close btn btn-done" data-dismiss="modal">X</button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="modal-content-item">...</p>
-                    </div>
-                    <div class="modal-footer">
-                        <div>
-                            <button type="button" class="modal-close btn btn-done" data-dismiss="modal">Done</button>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-update">Update</button>
-                            <button type="button" class="btn btn-delete">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- SCRIPTS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(".todo-main-container").html(""); // Clear the content
-
-        const modalTitle = $("#itemModalTitle");
-        const modalContent = $("#modal-content-item");
-        const modalClose = $(".modal-close");
-
-        const td = [<% - JSON.stringify(todo) %>];
-        // FIX RIGHT HERE LEFT ON 12/13/24
-        td.forEach((item, index) => {
-            console.log(item)
-            const itemx = item.length > 15 ? item.slice(0, 15) + "..." : item;
-            const html = `
-        <div id='item_${index}' class="todo-container" data-toggle="modal" data-target="#itemModal">
-            <div class="item-display-container">
-                <p>${index + 1}. ${itemx}</p>
-            </div>
-
-            <div class="item-action-button-container">
-                <div>
-                    <button class="btn btn-done">Open</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-            $(".todo-main-container").append(html);
-
-            $(`#item_${index}`).on("click", function () {
-                modalTitle.text(index);
-                modalContent.text(item);
-            });
-        });
-
-        modalClose.on("click", function () {
-            modalTitle.text("");
-            modalContent.text("");
-        });
-    </script>
 </body>
 
 </html>

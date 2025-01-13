@@ -2,13 +2,6 @@ import passport from "passport";
 
 import User from "../models/User.js";
 
-class appTodo {
-  constructor(todoName, todoCategory, todoId) {
-    this.todoName = todoName;
-    this.todoDate = new Date();
-  }
-}
-
 class login {
   static getLogin = (req, res) => {
     const title = "Login";

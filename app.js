@@ -60,6 +60,8 @@ app.post("/login", authRoutes);
 app.get("/logout", authRoutes);
 app.get("/dashboard", authRoutes);
 
+app.get("/dashboard/todoAdd", authRoutes);
+
 app.get("/register", registerRoutes);
 app.post("/register", registerRoutes);
 

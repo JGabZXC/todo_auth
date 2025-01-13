@@ -338,13 +338,6 @@ input[type="radio"] {
   cursor: pointer;
 }
 
-/* input[type="radio"]::before {
-  content: "";
-  width: 0.65rem;
-  height: 0.65rem;
-  border-radius: 50%;
-} */
-
 input[type="radio"]:checked {
   /* background-color: var(--fc-accent-1); */
   border: 0.50rem solid var(--fc-accent-1);
