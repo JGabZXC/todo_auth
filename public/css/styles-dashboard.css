@@ -1,19 +1,13 @@
 :root {
-    --fc-primary-1: #4a4947;
-    --fc-secondary-2: #d8d2c2;
-    --fc-3: #faf7f0;
-  
-    --fc-accent-1: hsl(25, 84%, 51%);
-    --fc-accent-1-darker: hsl(10, 84%, 51%);
+    --fc-primary-1: #fffefe;
 
-    --btn-color-1: #33b249;
-    --btn-color-2: #ffbd03;
-    --btn-color-3: #ED0800;
-  
-    --bgc-primary-1: #faf7f0;
-    --bgc-secondary-2: #384b70;
-  
-    --ff-1: "Poppins", serif;
+    --fc-accent-1: #ff5757;
+
+    --hover-primary: #b41111;
+
+    --bgc-primary-1: rgba(23, 23, 24, 1);
+
+    --ff-1: "Montserrat", serif;
 }
 
 /* ------------- MAIN SECTION ------------- */
@@ -83,19 +77,19 @@
 
 /* ------------- MEDIA QUERIES ------------- */
 
-@media (width <= 1074px) {
+@media (width <=1074px) {
     .todo-main-container {
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
 
-@media (width <= 770px) {
+@media (width <=770px) {
     .todo-main-container {
         grid-template-columns: 1fr 1fr;
     }
 }
 
-@media (width <= 600px) {
+@media (width <=600px) {
     .todo-main-container {
         grid-template-columns: 1fr;
     }

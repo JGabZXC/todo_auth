@@ -29,8 +29,6 @@ class register {
         sex,
       } = req.body;
 
-      console.log(req.body);
-
       const checkEmail = await User.findAcc({ username: email });
       const checkUsername = await User.findAcc({ username });
 
@@ -61,7 +59,7 @@ class register {
       req.flash("success", `${insert.data.message}`);
       return res.redirect("/login");
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       console.log(err?.response?.data?.message);
       if (err?.response?.data?.message) {
         req.flash("error", `${err.response.data.message}`);

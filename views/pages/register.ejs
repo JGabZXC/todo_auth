@@ -26,54 +26,62 @@
                 </p>
               </div>
               <% } %>
-                <form action="/register" method="post">
-                  <div class="email--container separator-container">
-                    <label for="emailReg">Email address</label>
-                    <input type="text" class="form-control" name="email" id="emailReg" aria-describedby="emailHelp"
-                      placeholder="Enter email" required>
-                  </div>
-                  <div class="username--container separator-container">
-                    <label for="usernameReg">Username</label>
-                    <input type="text" class="form-control" name="username" id="usernameReg"
-                      aria-describedby="usernameHelp" placeholder="Enter username" required>
-                  </div>
-                  <div class="password--container separator-container">
-                    <label for="passwordReg">Password</label>
-                    <input type="text" class="form-control" name="password" id="passwordReg"
-                      aria-describedby="passwordHelp" placeholder="Enter password" required>
-                  </div>
-                  <div class="repassword--container separator-container">
-                    <label for="repasswordReg">Retype Password</label>
-                    <input type="text" class="form-control" name="repassword" id="repasswordReg"
-                      aria-describedby="repasswordHelp" placeholder="Re enter password" required>
-                  </div>
-                  <div class="firstName--container separator-container">
-                    <label for="firstNameReg">First Name</label>
-                    <input type="text" class="form-control" name="firstname" id="firstNameReg"
-                      aria-describedby="firstNameHelp" placeholder="Enter first name" required>
-                  </div>
-                  <div class="lastName--container separator-container">
-                    <label for="lastNameReg">Last Name</label>
-                    <input type="text" class="form-control" name="lastname" id="lastNameReg"
-                      aria-describedby="lastNameHelp" placeholder="Enter password" required>
-                  </div>
-                  <div class="sex--container separator-container">
-                    <label for="sexReg">Sex</label>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sex" value="Male" id="male" required>
-                      <label class="form-check-label" for="male">
-                        Male
-                      </label>
+                <% console.log(locals.message) %>
+                  <% if(locals.message) { %>
+                    <div class="alert alert-danger" role="alert">
+                      <p>
+                        <%= message[0] %>
+                      </p>
                     </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="sex" value="Female" id="female" required>
-                      <label class="form-check-label" for="female">
-                        Female
-                      </label>
-                    </div>
-                  </div>
-                  <button type="submit">Submit</button>
-                </form>
+                    <% } %>
+                      <form action="/register" method="post">
+                        <div class="email--container separator-container">
+                          <label for="emailReg">Email address</label>
+                          <input type="text" class="form-control" name="email" id="emailReg"
+                            aria-describedby="emailHelp" placeholder="Enter email" required>
+                        </div>
+                        <div class="username--container separator-container">
+                          <label for="usernameReg">Username</label>
+                          <input type="text" class="form-control" name="username" id="usernameReg"
+                            aria-describedby="usernameHelp" placeholder="Enter username" required>
+                        </div>
+                        <div class="password--container separator-container">
+                          <label for="passwordReg">Password</label>
+                          <input type="text" class="form-control" name="password" id="passwordReg"
+                            aria-describedby="passwordHelp" placeholder="Enter password" required>
+                        </div>
+                        <div class="repassword--container separator-container">
+                          <label for="repasswordReg">Retype Password</label>
+                          <input type="text" class="form-control" name="repassword" id="repasswordReg"
+                            aria-describedby="repasswordHelp" placeholder="Re enter password" required>
+                        </div>
+                        <div class="firstName--container separator-container">
+                          <label for="firstNameReg">First Name</label>
+                          <input type="text" class="form-control" name="firstname" id="firstNameReg"
+                            aria-describedby="firstNameHelp" placeholder="Enter first name" required>
+                        </div>
+                        <div class="lastName--container separator-container">
+                          <label for="lastNameReg">Last Name</label>
+                          <input type="text" class="form-control" name="lastname" id="lastNameReg"
+                            aria-describedby="lastNameHelp" placeholder="Enter password" required>
+                        </div>
+                        <div class="sex--container separator-container">
+                          <label for="sexReg">Sex</label>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" value="Male" id="male" required>
+                            <label class="form-check-label" for="male">
+                              Male
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" value="Female" id="female" required>
+                            <label class="form-check-label" for="female">
+                              Female
+                            </label>
+                          </div>
+                        </div>
+                        <button type="submit">Submit</button>
+                      </form>
           </div>
         </div>
       </section>
