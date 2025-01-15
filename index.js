@@ -283,33 +283,4 @@ app.post("/api/register/user", async (req, res, next) => {
   }
 });
 
-// Routes To Do
-// Get todo based on user ID
-app.get("/api/todo/get/all/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const check = await db.query("SELECT * FROM todos WHERE user_id = $1", [
-      id,
-    ]);
-
-    console.log(id);
-
-    if (!check.rowCount > 0) {
-      console.log("here");
-      return res
-        .status(404)
-        .json({ message: "No Content was found", status: 404, data: [] });
-    }
-
-    res.json({ message: "Datas retrieved", status: 200, data: check.rows });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({
-      message: err.messages,
-      status: 500,
-    });
-  }
-});
-
 app.listen(process.env.API_PORT || 5000);

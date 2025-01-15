@@ -14,6 +14,7 @@ CREATE TABLE todos (
     user_id INTEGER REFERENCES users(id),
     user_firstname VARCHAR(50),
     description VARCHAR (100),
+    category VARCHAR(50),
     todo_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR (20)
 )
