@@ -21,7 +21,9 @@ class TodoDB {
   }
 
   static async loadTodo(userID) {
-    const result = db.query("SELECT * FROM todos where user_id = $1", [userID]);
+    const result = await db.query("SELECT * FROM todos where user_id = $1", [
+      userID,
+    ]);
 
     return result;
   }

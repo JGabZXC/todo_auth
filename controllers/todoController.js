@@ -23,18 +23,24 @@ class AppTodo {
     return TodoDB.insertTodo(tod);
   }
 
-  _loadTodo(userID) {
-    const result = TodoDB.loadTodo(userID);
-
-    result
-      .then((res) => console.log(res.rows))
-      .catch((err) => console.error(err.message));
-    console.log("loaded to do");
+  async _loadTodo(userID) {
+    const result = await TodoDB.loadTodo(userID);
+    if (result.rows < 0) throw new Error("There's no to do found");
+    return result.rows;
   }
 }
 
 class TodoController {
-  static addTodo = (req, res) => {
+  static addTodoGET = (req, res) => {
+    try {
+      res.send(req.session);
+    } catch (err) {
+      console.error(err.message);
+      res.send(err.message);
+    }
+  };
+
+  static addTodoPOST = (req, res) => {
     try {
       appTd = new AppTodo();
       const { todoDescription, todoCategory } = req.body;
@@ -49,9 +55,8 @@ class TodoController {
         todoCategory
       );
 
-      appTd._loadTodo(req.user.id);
-      res.send(req.session);
-    } catch (err) {
+      res.redirect("/dashboard");
+    } catch (error) {
       console.error(err.message);
       res.send(err.message);
     }

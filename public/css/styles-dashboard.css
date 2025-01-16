@@ -11,3 +11,42 @@
 }
 
 /* ------------- MAIN SECTION ------------- */
+
+aside {
+   width: 20%;
+}
+
+main {
+    display: flex;
+}
+
+.dashboard .container {
+    color: var(--fc-accent-1);
+    width: 95%;
+    padding: 1rem;
+    outline: 2px solid green;
+}
+
+.dashboard {
+    width: 100%;
+}
+
+.dashboard--container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.todo--container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    width: 30%;
+    border: 2px solid var(--hover-primary);
+}
+
+.todo-footer {
+    display: flex;
+    justify-content: space-between;
+}

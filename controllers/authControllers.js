@@ -28,12 +28,14 @@ class login {
 
   static getDashboard = async (req, res) => {
     const title = "Dashboard";
-    const todo = await User.getTodo({ id: req.session.user.id });
+
     const appTd = new AppTodo();
+    const loadTodo = await appTd._loadTodo(req.user.id);
+
     res.render("pages/dashboard.ejs", {
       pageTitle: title,
       user: req.session.user,
-      todo: todo.data,
+      todo: loadTodo,
     });
   };
 }

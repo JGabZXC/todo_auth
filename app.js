@@ -61,9 +61,14 @@ app.get("/logout", authRoutes);
 app.get("/dashboard", authRoutes);
 
 app.get("/dashboard/todoAdd", authRoutes);
+app.post("/dashboard/todoAdd", authRoutes);
 
 app.get("/register", registerRoutes);
 app.post("/register", registerRoutes);
+
+app.get("*", (_, res) => {
+  res.end("ERROR 404");
+});
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

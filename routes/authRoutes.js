@@ -15,6 +15,7 @@ router.get("/logout", isAuth, login.logout);
 
 router.get("/dashboard", isAuth, login.getDashboard);
 
-router.get("/dashboard/todoAdd", isAuth, TodoController.addTodo);
+router.get("/dashboard/todoAdd", isAuth, TodoController.addTodoGET);
+router.post("/dashboard/todoAdd", isAuth, TodoController.addTodoPOST);
 
 export default router;

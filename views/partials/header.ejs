@@ -1,6 +1,10 @@
 <nav>
   <div class="logo-container">
-    <h1 class="logo"><a href="/">ListIt!</a></h1>
+    <% if(user) { %>
+      <h1 class="logo"><a href="/dashboard">ListIt!</a></h1>
+      <% } else { %>
+        <h1 class="logo"><a href="/">ListIt!</a></h1>
+        <% } %>
   </div>
   <ul class="main-list">
     <% if(user) { %>
