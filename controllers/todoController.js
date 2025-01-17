@@ -14,20 +14,41 @@ class Todo {
 }
 
 class AppTodo {
-  constructor() {
-    this._loadTodo();
+  todos = [];
+
+  async initialize(userID) {
+    try {
+      this.todos = await this.#loadTodos(userID);
+    } catch (e) {
+      console.error(e.message);
+      throw new Error("Failed to initialize todos")
+    }
   }
 
-  _createTodo(userID, userFirstName, todoDescription, todoCategory) {
-    const tod = new Todo(userID, userFirstName, todoDescription, todoCategory);
-    return TodoDB.insertTodo(tod);
+  async _createTodo(userID, userFirstName, todoDescription, todoCategory) {
+    const todo = new Todo(userID, userFirstName, todoDescription, todoCategory);
+    try {
+      const result = await TodoDB.insertTodo(todo);
+      this.todos.push(todo)
+      return result;
+    } catch(e) {
+      console.error(e.message);
+      throw new Error('Unable to create a new todo')
+    }
   }
 
-  async _loadTodo(userID) {
-    const result = await TodoDB.loadTodo(userID);
-    if (result.rows < 0) throw new Error("There's no to do found");
+  async #loadTodos(userID) {
+    if(!userID) throw new Error("No user ID provided");
+
+    const result = await TodoDB.loadTodo(userID)
+    if(!result || result.rows.length === 0) {
+      throw new Error('No todos found for the user');
+    }
+
     return result.rows;
   }
+
+
 }
 
 class TodoController {

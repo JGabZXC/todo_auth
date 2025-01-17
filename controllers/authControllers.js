@@ -30,12 +30,13 @@ class login {
     const title = "Dashboard";
 
     const appTd = new AppTodo();
-    const loadTodo = await appTd._loadTodo(req.user.id);
+    await appTd.initialize(req.user.id);
+    const todos = appTd.todos;
 
     res.render("pages/dashboard.ejs", {
       pageTitle: title,
       user: req.session.user,
-      todo: loadTodo,
+      todo: todos,
     });
   };
 }

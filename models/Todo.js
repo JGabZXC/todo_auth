@@ -10,6 +10,7 @@ class TodoDB {
       date,
       todoStatus,
     } = todo;
+
     const result = await db.query(
       "INSERT INTO todos (user_id, user_firstname, description, category, todo_created, status) VALUES ($1, $2, $3, $4, $5, $6)",
       [userID, userFirstName, todoDescription, todoCategory, date, todoStatus]
