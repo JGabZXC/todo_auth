@@ -12,12 +12,52 @@
 
 /* ------------- MAIN SECTION ------------- */
 
-aside {
-   width: 20%;
-}
-
 main {
     display: flex;
+    padding:2rem;
+}
+
+aside {
+    width: 30%;
+}
+
+aside,
+.task,
+.task-option {
+    padding: 1rem;
+    outline: 2px solid green;
+}
+
+.aside-nav {
+    display: block;
+    padding: 1rem;
+    height: 100%;
+    border-radius: 1rem;
+    background-color: #b8b8b8;
+}
+
+.list-container p {
+    font-weight: bold;
+}
+
+.task-option {
+    width: 40%;
+}
+.list-container {
+    width: 100%;
+}
+
+.list-container p {
+    margin-bottom: .5rem;
+}
+
+.list-container ul li {
+    margin-left: .5rem;
+    padding: .5rem;
+}
+
+.list-container ul li.active {
+    background-color: gray;
 }
 
 .dashboard .container {
@@ -35,18 +75,4 @@ main {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-}
-
-.todo--container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    width: 30%;
-    border: 2px solid var(--hover-primary);
-}
-
-.todo-footer {
-    display: flex;
-    justify-content: space-between;
 }
