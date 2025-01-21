@@ -1,6 +1,6 @@
 import express from "express";
 import login from "../controllers/authControllers.js";
-import TodoController from "../controllers/todoController.js";
+
 
 import isAuth from "../middlewares/isAuth.js";
 import authNoAccess from "../middlewares/authNoAccess.js";
@@ -14,8 +14,5 @@ router.post("/login", authNoAccess, login.postLogin);
 router.get("/logout", isAuth, login.logout);
 
 router.get("/dashboard", isAuth, login.getDashboard);
-
-router.get("/dashboard/todoAdd", isAuth, TodoController.addTodoGET);
-router.post("/dashboard/todoAdd", isAuth, TodoController.addTodoPOST);
 
 export default router;

@@ -12,6 +12,7 @@ import flash from "connect-flash";
 import homeRoutes from "./routes/homeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import registerRoutes from "./routes/registerRoutes.js";
+import todoRoutes from "./routes/todoRoutes.js";
 
 import userReq from "./middlewares/userReq.js";
 
@@ -60,11 +61,12 @@ app.post("/login", authRoutes);
 app.get("/logout", authRoutes);
 app.get("/dashboard", authRoutes);
 
-app.get("/dashboard/todoAdd", authRoutes);
-app.post("/dashboard/todoAdd", authRoutes);
-
 app.get("/register", registerRoutes);
 app.post("/register", registerRoutes);
+
+// Todo
+app.get('/dashboard/category/:id', todoRoutes);
+app.post('/dashboard/newcategory', todoRoutes);
 
 app.get("*", (_, res) => {
   res.end("ERROR 404");

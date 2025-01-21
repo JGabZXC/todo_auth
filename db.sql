@@ -18,3 +18,9 @@ CREATE TABLE todos (
     todo_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR (20)
 )
+
+CREATE TABLE category (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    category VARCHAR(50)
+)

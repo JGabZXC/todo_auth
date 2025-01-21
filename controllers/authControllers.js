@@ -1,7 +1,6 @@
 import passport from "passport";
-import { AppTodo } from "./todoController.js";
-
-import User from "../models/User.js";
+import todoController from "./todoController.js";
+import TodoController from "./todoController.js";
 
 class login {
   static getLogin = (req, res) => {
@@ -28,16 +27,25 @@ class login {
 
   static getDashboard = async (req, res) => {
     const title = "Dashboard";
-
-    const appTd = new AppTodo();
-    await appTd.initialize(req.user.id);
-    const todos = appTd.todos;
-
-    res.render("pages/dashboard.ejs", {
-      pageTitle: title,
-      user: req.session.user,
-      todo: todos,
-    });
+    try {
+      const todoCategory = await TodoController.loadCategory(req, res);
+      const todoObject = await TodoController.loadTodo(req, res);
+      const todo = {
+        todoCategory,
+        todoObject
+      }
+      res.render("pages/dashboard.ejs", {
+        pageTitle: title,
+        user: req.session.user,
+        todo: todo
+      });
+    } catch (err) {
+      res.render("pages/dashboard.ejs", {
+        pageTitle: title,
+        user: req.session.user,
+        message: err.message,
+      });
+    }
   };
 }
 

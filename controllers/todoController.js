@@ -1,88 +1,70 @@
-import TodoDB from "../models/Todo.js";
-
-let appTd;
+import TodoModel from "../models/TodoModel.js";
 
 class Todo {
-  date = new Date();
-  constructor(userID, userFirstName, todoDescription, todoCategory) {
-    this.userID = userID;
-    this.userFirstName = userFirstName;
-    this.todoDescription = todoDescription;
-    this.todoCategory = todoCategory;
-    this.todoStatus = "Pending";
-  }
-}
-
-class AppTodo {
-  todos = [];
-
-  async initialize(userID) {
-    try {
-      this.todos = await this.#loadTodos(userID);
-    } catch (e) {
-      console.error(e.message);
-      throw new Error("Failed to initialize todos")
+    date = new Date();
+    constructor(user_id, user_firstname, description, category) {
+        this.user_id = user_id;
+        this.user_firstname = user_firstname;
+        this.description = description;
+        this.category = category;
+        this.status = 'Pending';
     }
-  }
-
-  async _createTodo(userID, userFirstName, todoDescription, todoCategory) {
-    const todo = new Todo(userID, userFirstName, todoDescription, todoCategory);
-    try {
-      const result = await TodoDB.insertTodo(todo);
-      this.todos.push(todo)
-      return result;
-    } catch(e) {
-      console.error(e.message);
-      throw new Error('Unable to create a new todo')
-    }
-  }
-
-  async #loadTodos(userID) {
-    if(!userID) throw new Error("No user ID provided");
-
-    const result = await TodoDB.loadTodo(userID)
-    if(!result || result.rows.length === 0) {
-      throw new Error('No todos found for the user');
-    }
-
-    return result.rows;
-  }
-
-
 }
 
 class TodoController {
-  static addTodoGET = (req, res) => {
-    try {
-      res.send(req.session);
-    } catch (err) {
-      console.error(err.message);
-      res.send(err.message);
+    static newTodo = (req, res) => {
+        try {
+            const {description, category} = req.body;
+            if(!description) throw new Error("Missing description");
+
+            const todo = new Todo(req.user.id, req.user.first_name, description, category);
+            TodoModel.insertTodo(todo);
+        } catch(err) {
+            throw err;
+        }
     }
-  };
 
-  static addTodoPOST = (req, res) => {
-    try {
-      appTd = new AppTodo();
-      const { todoDescription, todoCategory } = req.body;
+    static newCategory = async (req, res) => {
+        try {
+            const {category} = req.body;
+            const trimCategory = category.trim();
+            if(trimCategory.length === 0) throw new Error("Missing credentials");
+            if(!category) throw new Error("Missing credentials");
 
-      if (todoDescription.length > 100)
-        throw new Error("Todo description length exceeded 100 characters");
+            await TodoModel.insertCategory(req.user.id, category);
 
-      appTd._createTodo(
-        req.user.id,
-        req.user.first_name,
-        todoDescription,
-        todoCategory
-      );
-
-      res.redirect("/dashboard");
-    } catch (error) {
-      console.error(err.message);
-      res.send(err.message);
+            res.redirect("/dashboard");
+        } catch (err) {
+            throw err;
+        }
     }
-  };
+
+    static editTodo = (req, res) => {}
+    static editCategory = (req, res) => {}
+    static editStatus = (req, res) => {}
+
+    static deleteTodo = (req, res) => {}
+    static deleteCategory = (req, res) => {}
+
+    static loadTodo = async (req, res) => {
+        try {
+            return await TodoModel.loadTodo(req.user.id);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static loadCategory = async (req, res) => {
+        try {
+            return await TodoModel.loadCategory(req.user.id);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    static selectedCategory = (req, res) => {
+        console.log(req.params);
+    }
 }
 
-export { AppTodo };
 export default TodoController;

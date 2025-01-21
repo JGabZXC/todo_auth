@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="css/styles-dashboard.css" />
+  <script defer src="js/dashboard.js"></script>
   <title>
     <%= pageTitle %> | <%= user?.first_name %>
   </title>
@@ -14,51 +15,78 @@
 <body>
   <div class="main--container">
     <header><%- include('../partials/header.ejs') %></header>
-
     <main>
       <aside class="default-text">
         <nav class="aside-nav">
           <div class="list-container">
             <p>LISTS</p>
-            <ul>
-              <li>Personal</li>
-              <li class="active">Work</li>
-              <li>List1</li>
-              <li>+ Add new List</li>
-            </ul>
+            <% if(locals.todo) { %>
+              <ul>
+                <% todo.todoCategory.forEach(td => { %>
+                <li><a href="/dashboard/category/<%= td.id %>"><%= td.category %></li>
+                <% }) %></a>
+                <li class="new-list">+ Add new List</li>
+                <li class="new-list-form hidden">
+                  <p class="new-list-form-close">X</p>
+                  <form action="/dashboard/newcategory" method="post">
+                    <input class="new-list-inp" type="text" name="category" placeholder="Enter new list name" />
+                  </form>
+                </li>
+              </ul>
+            <% } else { %>
+              <ul>
+                <li class="new-list">+ Add new List</li>
+                <li class="new-list-form hidden">
+                  <p class="new-list-form-close">X</p>
+                  <form action="/dashboard/newcategory" method="post">
+                    <input class="new-list-inp" type="text" name="category" placeholder="Enter new list name" />
+                  </form>
+                </li>
+              </ul>
+            <% } %>
+
           </div>
         </nav>
       </aside>
-      <section class="dashboard task default-text">
-        <div class="list-title">
-          <h1>Work</h1>
-        </div>
-        <ul>
-          <li>+ Add new task</li>
-          <li>Debug code in WesternCode</li>
-          <li>Refactor readme.md</li>
-        </ul>
-      </section>
-      <section class="task-option default-text">
-        <div>
-          <h1>Task</h1>
-        </div>
-        <div class="description-container">
-          <p>Debug code in WesternCode</p>
-        </div>
-        <div class="option-container">
-          <p>List</p>
-          <select name="list" id="list">
-            <option value="work">Work</option>
-            <option value="personal">Personal</option>
-            <option value="list1">List1</option>
-          </select>
-        </div>
-        <div class="action-container">
-          <button>Delete Task</button>
-          <button>Save changes</button>
-        </div>
-      </section>
+      <% if(locals.todo.todoCategory.length === 0) { %>
+        <h1>No list was found, create a list first</h1>
+      <% } else { %>
+        <section class="dashboard task default-text">
+          <div class="list-title">
+            <h1>Work</h1>
+          </div>
+          <ul>
+            <li>+ Add new task</li>
+            <li>Debug code in WesternCode</li>
+            <li>Refactor readme.md</li>
+          </ul>
+        </section>
+        <section class="task-option default-text">
+          <div class="option-container-main">
+            <div class="option-header">
+              <div>
+                <h1>Task</h1>
+              </div>
+              <div class="description-container">
+                <p>Debug code in WesternCode</p>
+              </div>
+            </div>
+            <div class="option-container">
+              <label for="list">List</label>
+              <select name="list" id="list">
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="list1">List1</option>
+              </select>
+            </div>
+            <div class="action-container">
+              <button>Delete Task</button>
+              <button>Save changes</button>
+            </div>
+          </div>
+        </section>
+      <% } %>
+
     </main>
   </div>
 </body>

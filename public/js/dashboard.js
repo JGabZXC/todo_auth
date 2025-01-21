@@ -1,44 +1,18 @@
-$(".todo-main-container").html(""); // Clear the content
+'use strict';
 
-const modalTitle = $("#itemModalTitle");
-const modalContent = $("#modal-content-item");
-const modalClose = $(".modal-close");
+const listEl = document.querySelector('.new-list');
+const listForm = document.querySelector('.new-list-form');
+const listFormClose = document.querySelector('.new-list-form-close');
+const listInp = document.querySelector('.new-list-inp');
 
-const todo = [
-  "Clean car",
-  "Do dishes",
-  "Clean bedroom",
-  "Do homework",
-  "Clean fridge",
-  "Take a bath",
-  "Llasdjkawklj danmasndlk lzkjxcksn dkoszxczxczxc",
-];
+listEl.addEventListener('click', function() {
+  listEl.classList.add('hidden');
+  listForm.classList.remove('hidden');
+  listInp.focus();
+})
 
-todo.forEach((item, index) => {
-  const itemx = item.length > 15 ? item.slice(0, 15) + "..." : item;
-  const html = `
-        <div id='item_${index}' class="todo-container" data-toggle="modal" data-target="#itemModal">
-            <div class="item-display-container">
-                <p>${index + 1}. ${itemx}</p>
-            </div>
-
-            <div class="item-action-button-container">
-                <div>
-                    <button class="btn btn-done">Open</button>
-                </div>
-            </div>
-        </div>
-    `;
-
-  $(".todo-main-container").append(html);
-
-  $(`#item_${index}`).on("click", function () {
-    modalTitle.text(index);
-    modalContent.text(item);
-  });
-});
-
-modalClose.on("click", function () {
-  modalTitle.text("");
-  modalContent.text("");
-});
+listFormClose.addEventListener('click', function() {
+  listEl.classList.remove('hidden');
+  listForm.classList.add('hidden');
+  listInp.value = '';
+})
