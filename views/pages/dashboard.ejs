@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="stylesheet" href="css/styles-dashboard.css" />
-  <script defer src="js/dashboard.js"></script>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/styles-dashboard.css" />
+  <script defer src="/js/dashboard.js"></script>
   <title>
     <%= pageTitle %> | <%= user?.first_name %>
   </title>
@@ -52,14 +52,38 @@
         <h1>No list was found, create a list first</h1>
       <% } else { %>
         <section class="dashboard task default-text">
-          <div class="list-title">
-            <h1>Work</h1>
-          </div>
-          <ul>
-            <li>+ Add new task</li>
-            <li>Debug code in WesternCode</li>
-            <li>Refactor readme.md</li>
-          </ul>
+          <% if(!locals.todo.currentCategory) { %>
+            <h1>Please select a list</h1>
+          <% } %>
+            <% if(todo.todoObj) { %>
+              <% if(todo.todoObj?.length !== 0) { %>
+                <div class="list-title">
+                  <h1><%= todo?.currentCategory?.category %></h1>
+                </div>
+                <ul>
+                  <li>+ Add new task</li>
+                  <li>Debug code in WesternCode</li>
+                  <li>Refactor readme.md</li>
+                </ul>
+              <% } else { %>
+                  <div class="list-title">
+                    <h1><%= todo?.currentCategory?.category %></h1>
+                  </div>
+                <ul>
+                  <li class="new-task">+ Add new task</li>
+                  <li class="new-task-form hidden">
+                    <p class="new-task-form-close">X</p>
+                    <form action="/dashboard/newtodo" method="post">
+                      <input class="new-task-inp" type="text" name="description" placeholder="Enter new task name" />
+                      <input hidden class="new-task-category" type="text" name="category" value="<% todo.currentCategory.category %>" />
+                      <button type="submit">add task</button>
+                    </form>
+                  </li>
+                  <li>There's no Todo was found in this <%= todo.currentCategory.category %>, create one</li>
+                </ul>
+              <% } %>
+            <% } %>
+
         </section>
         <section class="task-option default-text">
           <div class="option-container-main">

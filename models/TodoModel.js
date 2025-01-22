@@ -33,7 +33,16 @@ class TodoModel {
         } catch (err) {
             throw err;
         }
+    }
 
+    static async selectSpecificCategory(userID, id) {
+        try {
+            const result = await db.query('SELECT * FROM category WHERE user_id = $1 AND id = $2', [userID, id]);
+            if(result.rowCount === 0) return {error: "Category not found"};
+            return result.rows[0];
+        } catch (err) {
+            throw err;
+        }
     }
 }
 

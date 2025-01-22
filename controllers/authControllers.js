@@ -29,15 +29,13 @@ class login {
     const title = "Dashboard";
     try {
       const todoCategory = await TodoController.loadCategory(req, res);
-      const todoObject = await TodoController.loadTodo(req, res);
       const todo = {
-        todoCategory,
-        todoObject
+        todoCategory
       }
       res.render("pages/dashboard.ejs", {
         pageTitle: title,
         user: req.session.user,
-        todo: todo
+        todo
       });
     } catch (err) {
       res.render("pages/dashboard.ejs", {

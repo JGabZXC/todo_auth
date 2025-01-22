@@ -1,15 +1,6 @@
 import TodoModel from "../models/TodoModel.js";
-
-class Todo {
-    date = new Date();
-    constructor(user_id, user_firstname, description, category) {
-        this.user_id = user_id;
-        this.user_firstname = user_firstname;
-        this.description = description;
-        this.category = category;
-        this.status = 'Pending';
-    }
-}
+import Todo from "../models/Todo.js";
+import {parse} from "dotenv";
 
 class TodoController {
     static newTodo = (req, res) => {
@@ -46,9 +37,9 @@ class TodoController {
     static deleteTodo = (req, res) => {}
     static deleteCategory = (req, res) => {}
 
-    static loadTodo = async (req, res) => {
+    static loadTodo = async (userID) => {
         try {
-            return await TodoModel.loadTodo(req.user.id);
+            return await TodoModel.loadTodo(userID);
         } catch (err) {
             throw err;
         }
@@ -62,8 +53,32 @@ class TodoController {
         }
     }
 
-    static selectedCategory = (req, res) => {
-        console.log(req.params);
+    static selectedCategory = async (req, res) => {
+        const {id} = req.params;
+        const title = "Dashboard";
+        try {
+            const todoCategory = await this.loadCategory(req, res);
+            const todoObj = await this.loadTodo(req.user.id);
+            const category = await TodoModel.selectSpecificCategory(req.user.id, id)
+            const todo = {
+                todoCategory,
+                todoObj,
+                currentCategory: category
+            }
+
+            // check if the ID exists
+            const categoryExists = todoCategory.some(cat => cat.id === parseInt(id));
+
+            if(!categoryExists) return res.end("ERROR 404: Category not found");
+
+            res.render("pages/dashboard.ejs", {
+                pageTitle: title,
+                user: req.session.user,
+                todo
+            })
+        } catch (err) {
+            throw err;
+        }
     }
 }
 

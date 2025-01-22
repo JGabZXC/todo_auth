@@ -23,7 +23,7 @@ dotenv.config();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static("public/"));
+app.use(express.static("public"));
 
 const store = new pgSession({
   pool: db, // Your DB
@@ -66,6 +66,8 @@ app.post("/register", registerRoutes);
 
 // Todo
 app.get('/dashboard/category/:id', todoRoutes);
+
+app.post('/dashboard/newtodo', todoRoutes);
 app.post('/dashboard/newcategory', todoRoutes);
 
 app.get("*", (_, res) => {
