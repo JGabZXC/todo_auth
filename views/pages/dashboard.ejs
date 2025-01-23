@@ -75,7 +75,8 @@
                     <p class="new-task-form-close">X</p>
                     <form action="/dashboard/newtodo" method="post">
                       <input class="new-task-inp" type="text" name="description" placeholder="Enter new task name" />
-                      <input hidden class="new-task-category" type="text" name="category" value="<% todo.currentCategory.category %>" />
+                      <input hidden class="new-task-category" type="text" name="category" value="<%= todo.currentCategory.category %>" />
+                      <input hidden class="new-task-category-id" type="text" name="categoryID" value="<%= todo.currentCategory.id %>" />
                       <button type="submit">add task</button>
                     </form>
                   </li>

@@ -5,11 +5,14 @@ import {parse} from "dotenv";
 class TodoController {
     static newTodo = (req, res) => {
         try {
-            const {description, category} = req.body;
+            const {description, category, categoryID} = req.body;
             if(!description) throw new Error("Missing description");
-
+            console.log(categoryID)
             const todo = new Todo(req.user.id, req.user.first_name, description, category);
+
             TodoModel.insertTodo(todo);
+
+            res.redirect(`/dashboard/category/${categoryID}`);
         } catch(err) {
             throw err;
         }
