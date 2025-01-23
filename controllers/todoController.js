@@ -7,7 +7,7 @@ class TodoController {
         try {
             const {description, category, categoryID} = req.body;
             if(!description) throw new Error("Missing description");
-            console.log(categoryID)
+
             const todo = new Todo(req.user.id, req.user.first_name, description, category);
 
             TodoModel.insertTodo(todo);
