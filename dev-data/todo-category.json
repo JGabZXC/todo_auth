@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "name": "Work",
+    "color": "ff0000",
+    "icon": "🏢"
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "name": "Personal",
+    "color": "ff0000",
+    "icon": "🤳"
+  },
+  {
+    "id": 3,
+    "user_id": 2,
+    "name": "Home",
+    "color": "ff0000",
+    "icon": "🏠"
+  }
+]

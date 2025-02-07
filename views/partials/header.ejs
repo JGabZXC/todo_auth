@@ -1,24 +1,2 @@
 <nav>
-  <div class="logo-container">
-    <% if(user) { %>
-      <h1 class="logo"><a href="/dashboard">ListIt!</a></h1>
-      <% } else { %>
-        <h1 class="logo"><a href="/">ListIt!</a></h1>
-        <% } %>
-  </div>
-  <ul class="main-list">
-    <% if(user) { %>
-      <li class="list"><a href="#">Create To Do</a></li>
-      <li class="list"><a href="#">Completed To Do</a></li>
-      <li class="list get-started btn"><a href="/logout">Logout</a></li>
-      <% } else { %>
-        <li class="list"><a href="/login">Log in</a></li>
-        <li class="list get-started btn"><a href="/register">Get Started for Free</a></li>
-        <% } %>
-  </ul>
-  <div class="hamburger">
-    <div class="bars"></div>
-    <div class="bars"></div>
-    <div class="bars"></div>
-  </div>
 </nav>

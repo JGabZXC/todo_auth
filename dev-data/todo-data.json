@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "category_id": 1,
+    "title": "Learn Node.js",
+    "description": "Learn Node.js and its fundamentals",
+    "date_created": "2025-02-01,10:00",
+    "date_completed": "",
+    "completed": false
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "category_id": 1,
+    "title": "Learn MongoDB",
+    "description": "Learn MongoDB",
+    "date_created": "2025-02-01,10:00",
+    "date_completed": "2025-03-01,10:00",
+    "completed": true
+  },
+  {
+    "id": 3,
+    "user_id": 2,
+    "category_id": 3,
+    "title": "Learn JavaScript",
+    "description": "Learn JavaScript and behind the scenes",
+    "date_created": "2025-05-01,10:00",
+    "date_completed": "2025-08-01,10:00",
+    "completed": false
+  }
+]
