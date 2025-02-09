@@ -7,7 +7,7 @@
     "description": "Learn Node.js and its fundamentals",
     "date_created": "2025-02-01,10:00",
     "date_completed": "",
-    "completed": false
+    "status": "pending"
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "description": "Learn MongoDB",
     "date_created": "2025-02-01,10:00",
     "date_completed": "2025-03-01,10:00",
-    "completed": true
+    "status": "in-progress"
   },
   {
     "id": 3,
@@ -27,6 +27,6 @@
     "description": "Learn JavaScript and behind the scenes",
     "date_created": "2025-05-01,10:00",
     "date_completed": "2025-08-01,10:00",
-    "completed": false
+    "status": "pending"
   }
 ]

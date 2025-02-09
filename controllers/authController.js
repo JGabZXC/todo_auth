@@ -1,4 +1,5 @@
 // noinspection ExceptionCaughtLocallyJS,JSCheckFunctionSignatures
+
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/userModel');
@@ -14,10 +15,35 @@ const verifyPromise = (tokenInput, secret) =>
     });
   });
 
+const cookieOptions = {
+  expires: new Date(
+    Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
+  ),
+  httpOnly: true,
+};
+
+if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+
 const signToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES,
   });
+
+const sendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+
+  res.cookie('jwt', token, cookieOptions);
+
+  user.password = undefined; // remove password from the output
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user: user,
+    },
+  });
+};
 
 exports.login = catchAsync(async (req, res, next) => {
   // username variable will accept username or email input
@@ -35,12 +61,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Invalid username or email or password', 401));
 
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  sendToken(user, 200, res);
 });
 
 exports.signup = catchAsync(async (req, res, next) => {
@@ -52,15 +73,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  const token = signToken(newUser._id);
-
-  res.status(201).json({
-    status: 'success',
-    token,
-    data: {
-      user: newUser,
-    },
-  });
+  sendToken(newUser, 201, res);
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -169,10 +182,5 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetExpires = undefined;
   await user.save(); // Run all the validators again
 
-  const token = signToken(user._id);
-
-  res.status(200).json({
-    status: 'success',
-    token,
-  });
+  sendToken(user, 200, res);
 });

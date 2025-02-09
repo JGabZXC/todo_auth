@@ -4,9 +4,21 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.route('/').get(authController.protect, authController.restrictToAdmin('admin'),userController.getAllUsers);
+router
+  .route('/')
+  .get(
+    authController.protect,
+    authController.restrictToAdmin('admin'),
+    userController.getAllUsers,
+  );
 
-router.route('/:id').get(authController.protect, authController.restrictToAdmin('admin'),userController.getUser);
+router
+  .route('/:id')
+  .get(
+    authController.protect,
+    authController.restrictToAdmin('admin'),
+    userController.getUser,
+  );
 
 router.route('/login').post(authController.login);
 
