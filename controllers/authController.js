@@ -61,6 +61,9 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError('Invalid username or email or password', 401));
 
+  user.validTokenDate = Date.now();
+  await user.save({ validateBeforeSave: false });
+
   sendToken(user, 200, res);
 });
 
@@ -110,6 +113,9 @@ exports.protect = catchAsync(async (req, res, next) => {
     return next(
       new AppError('User recently changed password! Please log in again', 401),
     );
+
+  if (currentUser.isTokenLatest(decoded.iat))
+    return next(new AppError('Token is not latest', 400));
 
   req.user = currentUser;
   next();
@@ -180,6 +186,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
+  user.validTokenDate = Date.now();
   await user.save(); // Run all the validators again
 
   sendToken(user, 200, res);

@@ -9,4 +9,8 @@ router
   .get(authController.protect, todoController.getUserTodo)
   .post(authController.protect, todoController.createTodo);
 
+router
+  .route('/category')
+  .post(authController.protect, todoController.createCategory);
+
 module.exports = router;

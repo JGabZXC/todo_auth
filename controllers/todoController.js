@@ -1,9 +1,10 @@
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Todo = require('../models/todoModel');
+const Category = require('../models/categoryModel');
 
 exports.getUserTodo = catchAsync(async (req, res, next) => {
-  const todo = await Todo.find({ userID: req.user._id});
+  const todo = await Todo.find({ userID: req.user._id });
 
   res.status(200).json({
     status: 'success',
@@ -26,6 +27,22 @@ exports.createTodo = catchAsync(async (req, res, next) => {
     status: 'success',
     data: {
       todo,
+    },
+  });
+});
+
+exports.createCategory = catchAsync(async (req, res, next) => {
+  const category = await Category.create({
+    userID: req.user._id,
+    name: req.body.name,
+    color: req.body.color,
+    icon: req.body.icon,
+  });
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      category,
     },
   });
 });

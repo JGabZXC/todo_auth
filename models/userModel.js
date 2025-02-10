@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords are not the same!',
     },
   },
+  validTokenDate: {
+    type: Date,
+    default: new Date(),
+  },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
@@ -76,6 +80,14 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
   }
 
   return false;
+};
+
+userSchema.methods.isTokenLatest = function (tokenDate) {
+  if (this.validTokenDate) {
+    const tokenTimeStamp = Math.floor(this.validTokenDate.getTime() / 1000);
+
+    return tokenDate < tokenTimeStamp;
+  }
 };
 
 userSchema.methods.createResetToken = function () {

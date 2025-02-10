@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const todoSchema = new mongoose.Schema({
   userID: {
-    type: String,
-    required: [true, 'User ID is required to create to do!'],
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: [true, 'To do must belong to a user!'],
   },
   category: {
     type: String,
