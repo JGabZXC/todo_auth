@@ -7,7 +7,8 @@ const todoSchema = new mongoose.Schema({
     required: [true, 'To do must belong to a user!'],
   },
   category: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
+    ref: 'Category',
   },
   title: {
     type: String,
@@ -39,6 +40,16 @@ todoSchema.pre('save', function (next) {
   if (this.status === 'completed') {
     this.status = 'completed';
   }
+
+  next();
+});
+
+// Populate user and category data
+todoSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'category',
+    select: '-__v -userID',
+  }).select('-__v -userID');
 
   next();
 });

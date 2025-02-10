@@ -4,13 +4,28 @@ const todoController = require('../controllers/todoController');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(authController.protect, todoController.getUserTodo)
-  .post(authController.protect, todoController.createTodo);
+router.use(authController.protect);
 
 router
   .route('/category')
-  .post(authController.protect, todoController.createCategory);
+  .get(todoController.getUserCategory)
+  .post(todoController.createCategory);
+
+router
+  .route('/category/:id')
+  .get(todoController.getUserCategory)
+  .delete(todoController.deleteUserCategory);
+
+router
+  .route('/')
+  .get(todoController.getUserTodo)
+  .post(todoController.createTodo);
+
+router
+  .route('/:id')
+  .get(todoController.getTodo)
+  .delete(todoController.deleteTodo);
+
+router.route('/status/:id').patch(todoController.editStatus);
 
 module.exports = router;

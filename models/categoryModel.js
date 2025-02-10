@@ -15,6 +15,13 @@ const categorySchema = new mongoose.Schema({
   icon: String,
 });
 
+// Populate user data
+categorySchema.pre(/^find/, function (next) {
+  this.select('-__v');
+
+  next();
+});
+
 const Category = mongoose.model('Category', categorySchema);
 
 module.exports = Category;
