@@ -1,9 +1,8 @@
-// noinspection JSUnusedLocalSymbols
+// noinspection JSUnusedLocalSymbols,JSCheckFunctionSignatures,JSUnresolvedReference
 
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const Todo = require('../models/todoModel');
-const Category = require('../models/categoryModel');
 
 class APIFeatures {
   constructor(query, queryString) {
@@ -49,6 +48,13 @@ class APIFeatures {
     return this;
   }
 }
+
+exports.checkTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findOne({ _id: req.params.id, userID: req.user._id });
+  if (!todo) return next(new AppError('No todo found with that ID', 404));
+
+  next();
+});
 
 exports.getUserTodo = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(
@@ -101,61 +107,26 @@ exports.getTodo = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.updateTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      todo,
+    },
+  });
+});
+
 exports.deleteTodo = catchAsync(async (req, res, next) => {
-  const todo = await Todo.findOne({ _id: req.params.id, userID: req.user._id });
-
-  if (!todo) return next(new AppError('No todo found with that ID', 404));
-
   await Todo.findByIdAndDelete(req.params.id);
 
   res.status(204).json({
     status: 'success',
     data: null,
-  });
-});
-
-exports.getUserCategory = catchAsync(async (req, res, next) => {
-  const category = await Category.find({ userID: req.user._id });
-
-  res.status(200).json({
-    status: 'success',
-    length: category.length,
-    data: {
-      category,
-    },
-  });
-});
-
-exports.deleteUserCategory = catchAsync(async (req, res, next) => {
-  const category = await Category.findOne({
-    _id: req.params.id,
-    userID: req.user._id,
-  });
-
-  if (!category)
-    return next(new AppError('No category found with that ID', 404));
-
-  await Category.findByIdAndDelete(req.params.id);
-
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
-});
-
-exports.createCategory = catchAsync(async (req, res, next) => {
-  const category = await Category.create({
-    userID: req.user._id,
-    name: req.body.name,
-    color: req.body.color,
-    icon: req.body.icon,
-  });
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      category,
-    },
   });
 });
 
