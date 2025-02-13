@@ -6,7 +6,7 @@ const rateLimit = require('express-rate-limit');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
-const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoutes');
 const todoRoute = require('./routes/todoRoute');
 const categoryRoute = require('./routes/categoryRoute');
 
@@ -37,7 +37,7 @@ app.use(
   }),
 );
 
-app.use('/api/v1/users', authRoute);
+app.use('/api/v1/users', userRoute);
 app.use('/api/v1/todos', todoRoute);
 app.use('/api/v1/categories', categoryRoute);
 

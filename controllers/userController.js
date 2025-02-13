@@ -1,24 +1,17 @@
-const catchAsync = require('../utils/catchAsync');
+const handler = require('./handlerController');
 const User = require('../models/userModel');
+const Todo = require('../models/todoModel');
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+exports.setID = (req, res, next) => {
+  req.params.id = req.user._id;
+  next();
+};
 
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: users,
-  });
-});
+exports.getAllUsers = handler.getAll(User);
+exports.getUser = handler.getOne(User, (req) => ({ _id: req.params.id }));
 
-exports.getUser = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+exports.getAllMyTodo = handler.getAll(Todo, (req) => ({
+  userID: req.user._id,
+}));
 
-  res.json(200).json({
-    status: 'success',
-    length: users.length,
-    data: {
-      users,
-    },
-  });
-});
+exports.getMyTodo = handler.getOne(Todo, (req) => ({ _id: req.params.id }));

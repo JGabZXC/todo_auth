@@ -1,4 +1,4 @@
-// noinspection ExceptionCaughtLocallyJS,JSCheckFunctionSignatures
+// noinspection ExceptionCaughtLocallyJS,JSCheckFunctionSignatures,JSUnusedLocalSymbols,JSUnresolvedReference
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -121,7 +121,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.restrictToAdmin = (...role) =>
+exports.restrictTo = (...role) =>
   catchAsync(async (req, res, next) => {
     if (!role.includes(req.user.role))
       return next(
