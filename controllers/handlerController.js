@@ -7,9 +7,10 @@ const AppError = require('../utils/appError');
 exports.checkModel = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findOne({
-      _id: req.params.id,
+      _id: req.params.id || req.params.categoryId,
       userID: req.user._id,
     });
+
     if (!doc) return next(new AppError('No document found with that ID', 404));
 
     next();
@@ -17,14 +18,12 @@ exports.checkModel = (Model) =>
 
 exports.getAll = (Model, filterOptions) =>
   catchAsync(async (req, res, next) => {
-    const features = new APIFeatures(
-      Model.find(
-        typeof filterOptions === 'function'
-          ? filterOptions(req)
-          : filterOptions,
-      ),
-      req.query,
-    )
+    const finalFilter =
+      typeof filterOptions === 'function' ? filterOptions(req) : filterOptions;
+
+    if (req.params.categoryId) finalFilter.category = req.params.categoryId;
+
+    const features = new APIFeatures(Model.find(finalFilter), req.query)
       .filter()
       .sort()
       .paginate();
