@@ -14,13 +14,22 @@ exports.getAllMyTodo = handler.getAll(Todo, (req) => ({
   userID: req.user._id,
 }));
 
-exports.getMyTodo = handler.getOne(Todo, (req) => ({ _id: req.params.id }));
-exports.setCategoryIdParams = (req, res, next) => {
-  req.params.id = req.params.categoryId;
-  next();
-};
-exports.setUserId = (req, res, next) => {
-  req.body.userID = req.user._id;
-  next();
-};
+exports.getMyTodo = handler.getOne(
+  Todo,
+  (req) => ({
+    _id: req.params.id,
+  }),
+  'userID',
+);
+
+exports.updateMyTodo = handler.updateOne(Todo);
+
+exports.deleteMyTodo = handler.deleteOne(Todo, (req) => ({
+  _id: req.params.id,
+}));
+
 exports.createTodo = handler.createOne(Todo);
+exports.setUserID = (req, res, next) => {
+  req.params.id = req.user._id;
+  next();
+};

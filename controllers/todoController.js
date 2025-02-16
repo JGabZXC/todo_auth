@@ -4,14 +4,11 @@ const catchAsync = require('../utils/catchAsync');
 const Todo = require('../models/todoModel');
 const handler = require('./handlerController');
 
-exports.checkTodo = handler.checkModel(Todo);
+exports.checkTodo = handler.checkModel(Todo, (req) => ({ _id: req.params.id }));
 
 exports.getAllTodos = handler.getAll(Todo);
 
-exports.getTodo = handler.getOne(Todo, (req) => ({
-  _id: req.params.id,
-  userID: req.user._id,
-}));
+exports.getTodo = handler.getOne(Todo, (req) => ({ _id: req.params.id }));
 
 exports.editStatus = catchAsync(async (req, res, next) => {
   const todo = await Todo.findById(req.params.id);

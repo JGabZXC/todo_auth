@@ -4,12 +4,13 @@ const catchAsync = require('../utils/catchAsync');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 
-exports.checkModel = (Model) =>
+exports.checkModel = (Model, filterOptions) =>
   catchAsync(async (req, res, next) => {
-    const doc = await Model.findOne({
-      _id: req.params.id || req.params.categoryId,
-      userID: req.user._id,
-    });
+    const finalFilter =
+      typeof filterOptions === 'function' ? filterOptions(req) : filterOptions;
+    finalFilter.userID = req.user._id;
+
+    const doc = await Model.findOne(finalFilter);
 
     if (!doc) return next(new AppError('No document found with that ID', 404));
 
@@ -46,11 +47,17 @@ exports.createOne = (Model) =>
         new AppError('You cannot set status when creating a todo', 400),
       );
 
+    if (req.body.userID)
+      return next(
+        new AppError('You cannot specify userID when creating a todo', 400),
+      );
+
     if (req.body.role)
       return next(
         new AppError('You cannot set role when creating a user', 400),
       );
 
+    req.body.userID = req.user._id;
     const doc = await Model.create(req.body);
 
     res.status(201).json({
@@ -61,7 +68,7 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getOne = (Model, filterOptions) =>
+exports.getOne = (Model, filterOptions, populateOptions) =>
   catchAsync(async (req, res, next) => {
     // reassigning filterOptions directly can sometimes lead to unexpected behavior! It is because of closures behavior and mutation of the original filterOptions object.
 
@@ -72,7 +79,7 @@ exports.getOne = (Model, filterOptions) =>
     // store it to any variable: const finalFilter = typeof filterOptions === 'function' ? filterOptions(req) : filterOptions;
     const doc = await Model.findOne(
       typeof filterOptions === 'function' ? filterOptions(req) : filterOptions,
-    );
+    ).populate(populateOptions);
 
     if (!doc) return next(new AppError('No document found with that ID', 404));
 
